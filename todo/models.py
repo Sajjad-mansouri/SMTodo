@@ -11,6 +11,7 @@ class Todo(models.Model):
 	user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='todos')
 	text=models.TextField()
 	alarm=models.DateTimeField(blank=True,null=False)
+	status=models.BooleanField(default=False)
 	created=models.DateTimeField(auto_now_add=True)
 	updated=models.DateTimeField(auto_now=True)
 	priority=models.CharField(choices=PRIORITY,default='m',max_length=1,null=True)
