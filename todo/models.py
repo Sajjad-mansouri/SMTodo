@@ -10,7 +10,7 @@ class Todo(models.Model):
 	]
 	user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='todos')
 	text=models.TextField()
-	alarm=models.DateTimeField(blank=True,null=True)
+	alarm=models.DateField(default=timezone.now)
 	status=models.BooleanField(default=False)
 	created=models.DateTimeField(auto_now_add=True)
 	updated=models.DateTimeField(auto_now=True)
