@@ -7,7 +7,7 @@ from .mixins import OwnerMixin
 class TodoAPIList(OwnerMixin,generics.ListCreateAPIView):
     serializer_class = TodoSerializer
     permission_classes = [IsAuthenticated]
-    
+
 
 
 

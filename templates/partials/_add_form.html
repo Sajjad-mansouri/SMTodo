@@ -11,8 +11,13 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-
-      {{form|crispy}}
+        <form method='POST' id='todo-form'>
+         {{form|crispy}}
+         <div>
+         <button class="btn btn-success form-control">add</button>
+             
+         </div>
+      </form>
     </div>
   </div>
 </div>

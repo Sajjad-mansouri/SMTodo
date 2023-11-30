@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     'fontawesomefree',
     'rest_framework',
+
 ]
 
 MIDDLEWARE = [
@@ -137,6 +138,9 @@ STATICFILES_DIRS=[
 MEDIA_URL='media/'
 MEDIA_ROOT=BASE_DIR/'media'
 
+LOGIN_REDIRECT_URL='todo'
+LOGOUT_REDIRECT_URL='login'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -161,3 +165,13 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 CELERY_BROKER_URL = "redis://localhost:6379"
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+
+REST_FRAMEWORK = {
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+
+}
