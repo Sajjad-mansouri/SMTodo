@@ -1,29 +1,43 @@
+window.addEventListener('load',function(){
+const today=new Date()
+var previousTag=document.querySelector('.previousDate');
+var nextTag=document.querySelector('.nextDate');
+var currentTag=document.querySelector('.currentDate');
+
+var currentTime=new Date();//today
+var previousTime=new Date();//
+var nextTime=new Date();
+
+previousTime.setDate(previousTime.getDate()-1);
+nextTime.setDate(nextTime.getDate()+1);
+
+previousTag.textContent=previousTime.toLocaleDateString();
+nextTag.textContent=nextTime.toLocaleDateString();
 
 
-var yesterdayTag=document.querySelector('.yesterday')
-var tomorrowTag=document.querySelector('.tomorrow')
+previousTag.addEventListener('click',(event) => dayNav(event,-1));
+nextTag.addEventListener('click',(event) => dayNav(event,+1));
+console.log(currentTag)
 
-var today=new Date()//today
-var yesterday=new Date()//
-var tomorrow=new Date()
-
-yesterday.setDate(yesterday.getDate()-1)
-tomorrow.setDate(tomorrow.getDate()+1)
-
-yesterdayTag.textContent=yesterday.toLocaleDateString()
-tomorrowTag.textContent=tomorrow.toLocaleDateString()
-
-
-yesterdayTag.addEventListener('click',(event)=>dayNav(event,yesterday,yesterdayTag,-1));
-tomorrowTag.addEventListener('click',(event)=>dayNav(event,tomorrow,tomorrowTag,+1));
-
-
-function dayNav(event,day,dayTag,number){
+function dayNav(event, number, ){
+	console.log(event)
 	event.preventDefault();
-	
-	dayTag.textContent=day.toLocaleDateString()
-	console.log(day)
-	fetch(`http://localhost:8000/api/${day.toISOString()}`)
+	previousTime.setDate(previousTime.getDate()+number)
+	currentTime.setDate(currentTime.getDate()+number)
+	nextTime.setDate(nextTime.getDate()+number)
+
+	previousTag.textContent=previousTime.toLocaleDateString()
+
+	if(currentTime.getDate()== today.getDate()){
+		currentTag.textContent='Today'
+	}else{
+	currentTag.textContent=currentTime.toLocaleDateString()
+
+	}
+	nextTag.textContent=nextTime.toLocaleDateString()
+
+
+	fetch(`http://localhost:8000/api/${currentTime.toISOString()}`)
 	.then(response=>{
 		return response.json()
 	})
@@ -31,5 +45,5 @@ function dayNav(event,day,dayTag,number){
 		console.log(data)
 	})
 
-	day.setDate(day.getDate()+1);
 }
+})
