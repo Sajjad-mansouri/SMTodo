@@ -28,3 +28,8 @@ class ToDo(LoginRequiredMixin,CreateView):
 		self.object.user=self.request.user
 		self.object.save()
 		return HttpResponseRedirect(reverse('todo'))
+
+	def get_context_data(self,*args,**kwargs):
+		context=super().get_context_data(*args,**kwargs)
+		context['todos']=self.get_queryset()
+		return context

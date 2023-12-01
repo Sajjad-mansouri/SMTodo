@@ -11,6 +11,7 @@ class TodoAPIList(OwnerMixin,generics.ListCreateAPIView):
 
 
 
+
 class TodoAPIDetail(OwnerMixin,generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TodoSerializer
     permission_classes = [IsAuthenticated]

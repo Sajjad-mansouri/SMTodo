@@ -5,9 +5,11 @@ window.addEventListener('load',function(){
         const accessToken = getToken();
         const button=document.querySelector('button')
         const formData= new FormData(form);
+        const obj=Object.fromEntries(formData)
+        obj.date={'date':obj.date}
         async function addTodo(data) {
             try{
-                var json = JSON.stringify(Object.fromEntries(formData));
+                var json = JSON.stringify(obj);
                 const response =await fetch("http://localhost:8000/api/",{
                     method:'POST',
                     
@@ -19,7 +21,9 @@ window.addEventListener('load',function(){
 
                  }
                     );
+
                 button.click()
+                form.reset()
 
 
             }catch(error){
@@ -31,27 +35,34 @@ window.addEventListener('load',function(){
     });
 
     function getToken(){
-      const accessToken = localStorage.getItem('access_token');
-      const refreshToken = localStorage.getItem('refresh_token');       
-      
-      if(!refreshToken){
+      let accessToken = localStorage.getItem('access_token');
+      const refreshToken = localStorage.getItem('refresh_token');      
+
+      if(!refreshToken ){
         window.location.href='http://localhost:8000/account/login'
       } 
 
-      if(isTokenExpired(accessToken)){
-        fetch('http://localhost:8000/api/refresh/',{
+      if(accessToken==='undefined' ||isTokenExpired( accessToken)){
+        console.log('expired')
+        fetch('http://localhost:8000/api/token/refresh/',{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
             },
-            body:JSON.stringify({refresh_token:refreshToken})
+            body:JSON.stringify({refresh:refreshToken})
         })
-        .then(response =>response.json())
+        .then(response =>{
+            if (response.ok){
+                return response.json()
+            }
+            
+        })
         .then(data=>{
-            localStorage.setItem('accessToken',data.access_token)
+            localStorage.setItem('access_token',data.access);
+            accessToken=data.access;
         }).catch(error=>{
             console.log(error);
-            // window.location.href='http://localhost:8000/account/login'
+            window.location.href='http://localhost:8000/account/login'
 
         })
 
@@ -62,10 +73,12 @@ window.addEventListener('load',function(){
 
     function isTokenExpired(token) {
       // Check if the token is expired
-        console.log('token')
+    
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
       console.log(decodedToken)
-      const expirationTime = decodedToken.exp * 1000;
-      return Date.now() > expirationTime;
+      const expirationTime = decodedToken.exp * 1000; 
+      return Date.now() > expirationTime;       
+
+      
     }
 })
