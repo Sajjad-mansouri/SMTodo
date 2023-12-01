@@ -42,7 +42,19 @@ function dayNav(event, number, ){
 		return response.json()
 	})
 	.then(data=>{
-		console.log(data)
+		let todoUl=document.querySelector('.todo-ul')
+		let todoList=document.querySelector('.todo-list');
+		todoUl.textContent=''
+		
+
+		for(todo of data){
+			let clonedList=todoList.cloneNode(true);
+			clonedList.style=''
+			let todoText=clonedList.querySelector('.todo-text');
+			todoText.append(todo.text);
+			todoUl.append(clonedList)
+
+		}
 	})
 
 }
