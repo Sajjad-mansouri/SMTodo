@@ -8,6 +8,9 @@ class Day(models.Model):
 	def __str__(self):
 		return f'{self.date}'
 
+	class Meta:
+		ordering=['-date']
+
 class Todo(models.Model):
 	PRIORITY=[
 	('h','High'),
