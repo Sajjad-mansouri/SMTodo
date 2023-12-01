@@ -50,8 +50,9 @@
             <div style="position: static;" class="ps ps--active-y">
               <div class="ps-content">
                 <ul class=" list-group list-group-flush">
-                  <p class="text-center my-3"><i class="fa-regular fa-calendar-check"></i> {{day}}</p>
-                  {{da}}
+
+                  <p class="text-center my-3 day"><a  class='yesterday'href=""></a> <i class="fa-regular fa-calendar-check"></i> Today <a  class=' tomorrow'href=""></a></p>
+                
                   {%for todo in day_todos.todo_set.all %}
                   <li class="list-group-item">
                     <div class="todo-indicator bg-warning"></div>
@@ -93,5 +94,4 @@
 
 
 </div>
-
 {%endblock%}
