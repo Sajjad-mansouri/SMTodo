@@ -17,7 +17,7 @@ nextTag.textContent=nextTime.toLocaleDateString();
 
 previousTag.addEventListener('click',(event) => dayNav(event,-1));
 nextTag.addEventListener('click',(event) => dayNav(event,+1));
-console.log(currentTag)
+
 
 function dayNav(event, number, ){
 	console.log(event)
