@@ -8,9 +8,9 @@ window.addEventListener('load',function(){
         const formData= new FormData(form);
         const obj=Object.fromEntries(formData)
         obj.date={'date':obj.date}
-        async function addTodo(data,accessToken) {
+        var json = JSON.stringify(obj);
+        async function addTodo(accessToken) {
             try{
-                var json = JSON.stringify(obj);
                 const response =await fetch("http://localhost:8000/api/",{
                     method:'POST',
                     
@@ -21,19 +21,23 @@ window.addEventListener('load',function(){
                     body:json
 
                  }
-                    );
 
+                    );
+                const data=response.json()
+                console.log(data)
                 button.click()
                 form.reset()
 
 
             }catch(error){
-                console.log(error)
+                console.log('unable to send todo')
             }
         }
         getToken().then((accessToken)=>{
-            addTodo(formData,accessToken)});
+            addTodo(accessToken)});
     });
+
+
 
     async function getToken(){
         try{
@@ -56,13 +60,15 @@ window.addEventListener('load',function(){
 
                     
             const data=await response.json();
-            const access=await data.access;
-            localStorage.setItem('access_token',access);
-            return access
+            accessToken=await data.access;
+            localStorage.setItem('access_token',accessToken);
+
+            
         }
+            return accessToken
 
       }catch(error){
-                console.log(error)
+               console.log('unable to getToken')
             }
       
       
