@@ -23,13 +23,28 @@ window.addEventListener('load',function(){
                  }
 
                     );
-                const data=response.json()
-                console.log(data)
+                const data=await response.json()
+                const todo_date=new Date(data.date.date).toDateString()
                 button.click()
                 form.reset()
+                let currentTag=document.querySelector('.currentDate')
+                let currentDate=currentTag.getAttribute('currentDate')
+                currentDate=new Date(currentDate)
+
+                if (currentDate.toDateString()==todo_date){
+
+                    let todoUl=document.querySelector('.todo-ul')
+                    let todoList=document.querySelector('.todo-list');
+                    let clonedList=todoList.cloneNode(true);
+                    clonedList.style=''
+                    let todoText=clonedList.querySelector('.todo-text');
+                    todoText.append(data.text);
+                    todoUl.prepend(clonedList)
+                }
 
 
             }catch(error){
+                console.log(error)
                 console.log('unable to send todo')
             }
         }

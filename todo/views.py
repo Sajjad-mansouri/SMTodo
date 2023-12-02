@@ -24,12 +24,14 @@ class ToDo(LoginRequiredMixin,CreateView):
 		today=timezone.now().date()
 		user=self.request.user
 		try:
-			query=Day.objects.get(Q(date=today)&Q(todo__user=self.request.user))
-		except:
-			query=None
-		return query
+
+			todos=Todo.objects.filter(Q(user=self.request.user)& Q(date__date=today))
+		except :
+
+			todos=None
+		return todos
 
 	def get_context_data(self,*args,**kwargs):
 		context=super().get_context_data(*args,**kwargs)
-		context['day_todos']=self.get_queryset()
+		context['todos']=self.get_queryset()
 		return context

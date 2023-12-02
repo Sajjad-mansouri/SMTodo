@@ -27,7 +27,7 @@ function dayNav(event, number, ){
 	nextTime.setDate(nextTime.getDate()+number)
 
 	previousTag.textContent=previousTime.toLocaleDateString()
-
+	currentTag.setAttribute('currentDate', currentTime.toISOString());
 	if(currentTime.getDate()== today.getDate()){
 		currentTag.textContent='Today'
 	}else{
