@@ -1,3 +1,4 @@
+
 window.addEventListener('load',function(){
 const today=new Date()
 var previousTag=document.querySelector('.previousDate');
@@ -18,7 +19,7 @@ nextTag.textContent=nextTime.toLocaleDateString();
 previousTag.addEventListener('click',(event) => dayNav(event,-1));
 nextTag.addEventListener('click',(event) => dayNav(event,+1));
 
-
+changeStatus()
 function dayNav(event, number, ){
 	console.log(event)
 	event.preventDefault();
@@ -43,17 +44,34 @@ function dayNav(event, number, ){
 	})
 	.then(data=>{
 		let todoUl=document.querySelector('.todo-ul')
+        let finishedUl=document.querySelector('.finished-ul')
 		let todoList=document.querySelector('.todo-list');
 		todoUl.textContent=''
-		
-
+		finishedUl.textContent=''
 		for(todo of data){
-			let clonedList=todoList.cloneNode(true);
-			clonedList.style=''
-			let todoText=clonedList.querySelector('.todo-text');
-			todoText.append(todo.text);
-			todoUl.append(clonedList)
+			console.log(todo.status)
+			if (todo.status===true){
 
+				let clonedList=todoList.cloneNode(true);
+				clonedList.style=''
+				clonedList.setAttribute('id',`${todo.id}`)
+				const input=clonedList.querySelector('input[type="checkbox"]')
+				input.checked=todo.status
+				input.setAttribute('id',`${todo.id}`)				
+				let todoText=clonedList.querySelector('.todo-text');
+				todoText.append(todo.text);
+				finishedUl.append(clonedList)
+			}else{
+				let clonedList=todoList.cloneNode(true);
+				clonedList.style=''
+				clonedList.setAttribute('id',`${todo.id}`)
+				const input=clonedList.querySelector('input[type="checkbox"]')
+				input.setAttribute('id',`${todo.id}`)
+				let todoText=clonedList.querySelector('.todo-text');
+				todoText.append(todo.text);
+				todoUl.append(clonedList)
+
+			}
 		}
 	})
 

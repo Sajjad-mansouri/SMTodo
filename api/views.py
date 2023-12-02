@@ -1,6 +1,7 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from .serializers import TodoSerializer
+from django.db.models import Q
 
 from todo.models import Day,Todo
 from datetime import datetime,timezone

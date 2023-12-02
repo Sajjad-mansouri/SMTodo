@@ -32,6 +32,8 @@ class ToDo(LoginRequiredMixin,CreateView):
 
 	def get_context_data(self,*args,**kwargs):
 		context=super().get_context_data(*args,**kwargs)
-		context['todos']=self.get_queryset()
+		context['todos']=self.get_queryset().filter(status=False)
+		context['finished']=self.get_queryset().filter(status=True)
+
 		context['day']=timezone.now().date().isoformat()
 		return context
