@@ -49,7 +49,7 @@
           <perfect-scrollbar class="ps-show-limits">
             <div style="position: static;" class="ps ps--active-y">
               <div class="ps-content">
-                 <p class="text-center my-3 "><a  class='previousDate'href=""></a> <i class="fa-regular fa-calendar-check"></i> <span class="currentDate">Today</span> <a  class='nextDate'href=""></a></p>
+                 <p class="text-center my-3 "><a  class='previousDate'href=""></a> <i class="fa-regular fa-calendar-check"></i> <span class="currentDate" currentDate='{{day}}'>Today</span> <a  class='nextDate'href=""></a></p>
                                    <li class="list-group-item todo-list" style="display:none">
                     <div class="todo-indicator bg-warning"></div>
                     <div class="widget-content p-0">
@@ -91,7 +91,11 @@
                         <div class="widget-content-left mr-2">
                           <div class="custom-checkbox custom-control">
                             <input class="custom-control-input"
-                              id="exampleCustomCheckbox12" type="checkbox"><label class="custom-control-label"
+                              id="{{todo.id}}" type="checkbox" 
+                              {%if todo.status%}
+                              checked
+                              {%endif%}
+                              ><label class="custom-control-label"
                               for="exampleCustomCheckbox12">&nbsp;</label>
                             </div>
                         </div>

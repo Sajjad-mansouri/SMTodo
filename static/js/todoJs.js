@@ -1,5 +1,6 @@
 window.addEventListener('load',function(){
     const form = document.getElementById('todo-form');
+    const check_input=document.querySelectorAll('input[type="checkbox"]')
 
     form.addEventListener('submit',function(e){
         e.preventDefault();
@@ -30,15 +31,20 @@ window.addEventListener('load',function(){
                 let currentTag=document.querySelector('.currentDate')
                 let currentDate=currentTag.getAttribute('currentDate')
                 currentDate=new Date(currentDate)
+                console.log(currentDate.toDateString())
+                console.log(todo_date)
 
                 if (currentDate.toDateString()==todo_date){
+
 
                     let todoUl=document.querySelector('.todo-ul')
                     let todoList=document.querySelector('.todo-list');
                     let clonedList=todoList.cloneNode(true);
+                    const checkbox = clonedList.querySelector('input[type="checkbox"]');
+                    checkbox.setAttribute('id',`${data.id}`)
                     clonedList.style=''
                     let todoText=clonedList.querySelector('.todo-text');
-                    todoText.append(data.text);
+                    todoText.prepend(data.text);
                     todoUl.prepend(clonedList)
                 }
 
@@ -84,9 +90,7 @@ window.addEventListener('load',function(){
 
       }catch(error){
                console.log('unable to getToken')
-            }
-      
-      
+            } 
     }
 
 
@@ -97,9 +101,33 @@ window.addEventListener('load',function(){
       let exp=decodedToken.exp * 1000 - Date.now()
       const expirationTime = decodedToken.exp * 1000; 
       console.log(exp/(1000*60))
-      return Date.now() > expirationTime;       
-
-      
+      return Date.now() > expirationTime;         
     };
+
+check_input.forEach((element)=>{
+    element.addEventListener('change',(event)=>{
+
+        const id=event.target.attributes.id.value;
+
+        async function changeStatus(accessToken){
+           await fetch(`http://localhost:8000/api/todo/${id}`,{
+                    method:'patch',
+                    
+                    headers: {
+                            "Content-Type": "application/json",
+                            'Authorization': `Bearer ${accessToken}`
+                          },
+                    body:JSON.stringify({'status':event.target.checked})
+
+                 });
+
+
+        }
+        getToken().then((accessToken)=>{
+            changeStatus(accessToken)});
+
+
+    })
+})
 
 })

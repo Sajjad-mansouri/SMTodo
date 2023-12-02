@@ -25,4 +25,7 @@ class Todo(models.Model):
 	updated=models.DateTimeField(auto_now=True)
 	priority=models.CharField(choices=PRIORITY,default='m',max_length=1,null=True)
 
+	class Meta:
+		ordering=['-created']
+
 

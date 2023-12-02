@@ -24,7 +24,6 @@ class ToDo(LoginRequiredMixin,CreateView):
 		today=timezone.now().date()
 		user=self.request.user
 		try:
-
 			todos=Todo.objects.filter(Q(user=self.request.user)& Q(date__date=today))
 		except :
 
@@ -34,4 +33,5 @@ class ToDo(LoginRequiredMixin,CreateView):
 	def get_context_data(self,*args,**kwargs):
 		context=super().get_context_data(*args,**kwargs)
 		context['todos']=self.get_queryset()
+		context['day']=timezone.now().date().isoformat()
 		return context
