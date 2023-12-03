@@ -51,8 +51,8 @@
               <div class="ps-content">
                  <p class="text-center my-3 "><a  class='previousDate'href=""></a> <i class="fa-regular fa-calendar-check"></i> <span class="currentDate" currentDate='{{day}}'>Today</span> <a  class='nextDate'href=""></a></p>
                 <!-- todo list template -->
-                              <div class='todo-list' style="display:none">
-                                  <li class="list-group-item todo-{{todo.id}}" role="button"  >
+                              <div class='todo-div' style="display:none">
+                                  <li class="list-group-item todo-list" role="button"  >
                                     <div class="todo-indicator bg-warning"></div>
                                     <div class="widget-content p-0">
                                       <div class="widget-content-wrapper">
@@ -83,7 +83,7 @@
                                   <i class="fa fa-check"></i></button>
                                          <button class="border-0 btn-transition btn btn-outline-secondary">
                                           <i class="fa-regular fa-pen-to-square"></i></button>
-                                          <button class="border-0 btn-transition btn btn-outline-danger">
+                                          <button class="border-0 btn-transition btn btn-outline-danger btn-remove" data-type='remove'>
                                          <i class="fa fa-trash"></i>
                                          
                                         </button>
@@ -108,8 +108,8 @@
                       <ul class=" list-group list-group-flush todo-ul">
                           {%for todo in todos %}
                           
-                              <div id='div-{{todo.id}}'class='todo-list'>
-                                  <li class="list-group-item " role="button"  >
+                              <div id='div-{{todo.id}}'class='todo-div'>
+                                  <li class="list-group-item todo-list" role="button"  >
                                     <div class="todo-indicator bg-warning"></div>
                                     <div class="widget-content p-0">
                                       <div class="widget-content-wrapper">
@@ -142,7 +142,7 @@
                                   <i class="fa fa-check"></i></button>
                                          <button class="border-0 btn-transition btn btn-outline-secondary">
                                           <i class="fa-regular fa-pen-to-square"></i></button>
-                                          <button class="border-0 btn-transition btn btn-outline-danger">
+                                          <button class="border-0 btn-transition btn btn-outline-danger btn-remove" data-type='remove' data='{{todo.id}}'>
                                          <i class="fa fa-trash"></i>
                                          
                                         </button>
@@ -159,8 +159,8 @@
                       <ul class=" list-group list-group-flush finished-ul">
                           {%for todo in finished %}
                                     
-                                        <div id='div-{{todo.id}}'class='todo-list'>
-                                            <li class="list-group-item "  role="button"  >
+                                        <div id='div-{{todo.id}}'class='todo-div'>
+                                            <li class="list-group-item  todo-list"  role="button"  >
                                               <div class="todo-indicator bg-warning"></div>
                                               <div class="widget-content p-0">
                                                 <div class="widget-content-wrapper">
@@ -190,7 +190,7 @@
                                             <i class="fa fa-check"></i></button>
                                                    <button class="border-0 btn-transition btn btn-outline-secondary">
                                                     <i class="fa-regular fa-pen-to-square"></i></button>
-                                                    <button class="border-0 btn-transition btn btn-outline-danger">
+                                                    <button class="border-0 btn-transition btn btn-outline-danger btn-remove" data-type='remove' data='{{todo.id}}'>
                                                    <i class="fa fa-trash"></i>
                                                    
                                                   </button>

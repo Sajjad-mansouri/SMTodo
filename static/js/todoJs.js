@@ -36,7 +36,7 @@ window.addEventListener('load',function(){
 
                 if (currentDate.toDateString()==todo_date){
                     let todoUl=document.querySelector('.todo-ul')
-                    let todoList=document.querySelector('.todo-list');
+                    let todoList=document.querySelector('.todo-div');
                     createList(todoList,data,todoUl)
                 }
 
@@ -106,7 +106,9 @@ window.addEventListener('load',function(){
     };
 
     function addEventElement(element){
-            element.addEventListener('change',(event)=>{
+            const dataType=element.getAttribute('data-type')
+            if(element.type=='checkbox'){
+                element.addEventListener('change',(event)=>{
 
                 const id=event.target.attributes.id.value;
                 async function change(accessToken){
@@ -147,9 +149,6 @@ window.addEventListener('load',function(){
                     }catch(error){
                         console.log(error)
                     }
-
-
-
                 }
                 getToken().then((accessToken)=>{
                     
@@ -157,8 +156,28 @@ window.addEventListener('load',function(){
                 change(accessToken)
             }
                 });
-                                                })        
-    }
+                                                })    
+            }
+            if (dataType=='remove'){
+                const data=element.getAttribute('data')
+                
+                         element.addEventListener('click',()=>{
+                            getToken().then((accessToken)=>{ 
+                            if (accessToken !=undefined){
+                            remove(accessToken,data)
+                                                        }       
+                        });
+
+                        })  
+
+
+                }
+
+
+
+            }
+    
+    
     function changeStatus(checkInputTag){
         checkInputTag.forEach((element)=>{
             addEventElement(element)
@@ -217,7 +236,7 @@ window.addEventListener('load',function(){
             .then(data=>{
                 let todoUl=document.querySelector('.todo-ul')
                 let finishedUl=document.querySelector('.finished-ul')
-                let todoList=document.querySelector('.todo-list');
+                let todoList=document.querySelector('.todo-div');
                 todoUl.textContent=''
                 finishedUl.textContent=''
                 for(todo of data){
@@ -229,8 +248,7 @@ window.addEventListener('load',function(){
                     }
 
                 }
-                collapse(finishedUl)
-                collapse(todoUl)
+
 
             })
 
@@ -241,18 +259,44 @@ window.addEventListener('load',function(){
             clonedList.style=''
             clonedList.setAttribute('id',`div-${todo.id}`)
             const input=clonedList.querySelector('input[type="checkbox"]')
+            const btnRemove=clonedList.querySelector('[data-type="remove"]')
+            btnRemove.setAttribute('data',`${todo.id}`)
             input.setAttribute('id',`${todo.id}`)
             input.checked=todo.status
             let todoText=clonedList.querySelector('.todo-text');
             todoText.append(todo.text);
             todoUl.prepend(clonedList)
-            addEventElement(input)      
+            addEventElement(input) 
+            addEventElement(btnRemove) 
+            collapse(todoUl)
+
+           removeListener(btnRemoves)     
                             }
 
     // reomove todo function
-    function removeTodo(){
+   const btnRemoves=document.querySelectorAll('.btn-remove')
+   removeListener(btnRemoves)
+   function removeListener(btns){
+        btns.forEach((element)=>{
+            addEventElement(element)
+        })
+   }
+   
+async function remove(accessToken,data){
+        const response=await fetch(`http://localhost:8000/api/todo/${data}`,{
+            method:"delete",
+            headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${accessToken}`
+                  },
+        })
+        if (response.ok){
+            const div=document.getElementById(`div-${data}`)
 
-    }
+            div.remove()
+        }
+
+}
 
     const todoUl=document.querySelector('.todo-ul')
     const finishedUl=document.querySelector('.finished-ul')
@@ -260,12 +304,13 @@ window.addEventListener('load',function(){
     collapse(finishedUl)
 
     function collapse(ul){
-        const div=ul.querySelectorAll('.todo-list')
-        div.forEach((element)=>{
+
+        const lists=ul.querySelectorAll('.todo-list')
+        lists.forEach((element)=>{
             element.addEventListener('click',(e)=>{
                 console.log('toggle')
 
-                let collapse=element.lastElementChild
+                let collapse=element.nextElementSibling
                 console.log(collapse)
                 collapse.classList.toggle('collapse')
             })
