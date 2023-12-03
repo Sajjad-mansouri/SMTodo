@@ -1,8 +1,7 @@
 
 window.addEventListener('load',function(){
     const form = document.getElementById('todo-form');
-        
-        
+
 
     form.addEventListener('submit',function(e){
         e.preventDefault();
@@ -44,11 +43,13 @@ window.addEventListener('load',function(){
                     const checkbox = clonedList.querySelector('input[type="checkbox"]');
                     checkbox.setAttribute('id',`${data.id}`)
                     clonedList.style=''
-                    clonedList.setAttribute('id',`todo-${data.id}`)
+                    clonedList.className+= " " + `todo-${data.id}`
                     let todoText=clonedList.querySelector('.todo-text');
                     todoText.prepend(data.text);
                     todoUl.prepend(clonedList)
+                    addEventElement(checkbox)
                 }
+
 
 
             }catch(error){
@@ -57,7 +58,10 @@ window.addEventListener('load',function(){
             }
         }
         getToken().then((accessToken)=>{
-            addTodo(accessToken)});
+            if (accessToken !=undefined){
+                addTodo(accessToken)
+            }
+            });
     });
 
     async function getToken(){
@@ -70,44 +74,55 @@ window.addEventListener('load',function(){
             window.location.href='http://localhost:8000/account/login'
             } 
 
-            if(accessToken==='undefined' ||isTokenExpired( accessToken)){
-            const response=await fetch('http://localhost:8000/api/token/refresh/',{
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                body:JSON.stringify({refresh:refreshToken})
-            })
+            if(accessToken=='undefined' || isTokenExpired( accessToken) ){
 
-                    
-            const data=await response.json();
-            accessToken=await data.access;
-            localStorage.setItem('access_token',accessToken);
+                const response=await fetch('http://localhost:8000/api/token/refresh/',{
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    body:JSON.stringify({refresh:refreshToken})
+                })
+
+                if (response.ok){
+                    const data=await response.json();
+                    accessToken=await data.access;
+                    localStorage.setItem('access_token',accessToken);
+                    return accessToken
+                } else{
+                    console.log('else')
+                    window.location.href='http://localhost:8000/account/login'
+                }  
+
 
             
-        }
+        }else{
             return accessToken
+        }
+            
 
       }catch(error){
                console.log('unable to getToken')
+
             } 
     }
 
     function isTokenExpired(token) {
-      // Check if the token is expired
+
 
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
       const expirationTime = decodedToken.exp * 1000; 
       return Date.now() > expirationTime;         
     };
 
-    function changeStatus(checkInputTag){
-        checkInputTag.forEach((element)=>{
+    function addEventElement(element){
             element.addEventListener('change',(event)=>{
 
                 const id=event.target.attributes.id.value;
-                async function changeStatus(accessToken){
-                    const response=await fetch(`http://localhost:8000/api/todo/${id}`,{
+                async function change(accessToken){
+                    try{    
+
+                            const response=await fetch(`http://localhost:8000/api/todo/${id}`,{
                             method:'patch',
                             
                             headers: {
@@ -120,7 +135,8 @@ window.addEventListener('load',function(){
                     const data=await response.json();
                     let finishedUl=document.querySelector('.finished-ul');
                     let todoUl=document.querySelector('.todo-ul');
-                    let todoLi=document.querySelector(`#todo-${data.id}`);
+                    let todoLi=document.querySelector(`li.todo-${data.id}`);
+                    console.log(todoLi)
 
 
                     
@@ -132,14 +148,24 @@ window.addEventListener('load',function(){
                             todoUl.prepend(todoLi)   
 
                     }
+                    }catch(error){
+                        console.log(error)
+                    }
+
 
 
                 }
                 getToken().then((accessToken)=>{
-                    changeStatus(accessToken)});
-
-
-            })
+                    
+                    if (accessToken !=undefined){
+                change(accessToken)
+            }
+                });
+                                                })        
+    }
+    function changeStatus(checkInputTag){
+        checkInputTag.forEach((element)=>{
+            addEventElement(element)
         })
     }
     const checkInputTag=document.querySelectorAll('input[type="checkbox"]')
@@ -216,7 +242,7 @@ window.addEventListener('load',function(){
     function createList(todoList,todo,todoUl){
             let clonedList=todoList.cloneNode(true);
             clonedList.style=''
-            clonedList.setAttribute('id',`todo-${todo.id}`)
+            clonedList.className+=" " + `todo-${todo.id}`
             const input=clonedList.querySelector('input[type="checkbox"]')
             input.setAttribute('id',`${todo.id}`)
             input.checked=todo.status
@@ -230,7 +256,10 @@ window.addEventListener('load',function(){
 
     }
 
-
+    const todoUl=document.querySelector('.todo-ul')
+    const li=todoUl.children
+    console.log(todoUl)
+    console.log(li)
 
 // end
 })
