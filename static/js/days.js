@@ -1,5 +1,4 @@
 
-window.addEventListener('load',function(){
 const today=new Date()
 var previousTag=document.querySelector('.previousDate');
 var nextTag=document.querySelector('.nextDate');
@@ -76,4 +75,3 @@ function dayNav(event, number, ){
 	})
 
 }
-})

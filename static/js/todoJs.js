@@ -33,8 +33,7 @@ window.addEventListener('load',function(){
                 let currentTag=document.querySelector('.currentDate')
                 let currentDate=currentTag.getAttribute('currentDate')
                 currentDate=new Date(currentDate)
-                console.log(currentDate.toDateString())
-                console.log(todo_date)
+                
 
                 if (currentDate.toDateString()==todo_date){
 
@@ -45,7 +44,7 @@ window.addEventListener('load',function(){
                     const checkbox = clonedList.querySelector('input[type="checkbox"]');
                     checkbox.setAttribute('id',`${data.id}`)
                     clonedList.style=''
-                    clonedList.setAttribute('id',`${data.id}`)
+                    clonedList.setAttribute('id',`todo-${data.id}`)
                     let todoText=clonedList.querySelector('.todo-text');
                     todoText.prepend(data.text);
                     todoUl.prepend(clonedList)
@@ -98,9 +97,7 @@ window.addEventListener('load',function(){
       // Check if the token is expired
 
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
-      let exp=decodedToken.exp * 1000 - Date.now()
       const expirationTime = decodedToken.exp * 1000; 
-      console.log(exp/(1000*60))
       return Date.now() > expirationTime;         
     };
 
@@ -110,7 +107,6 @@ window.addEventListener('load',function(){
 
                 const id=event.target.attributes.id.value;
                 async function changeStatus(accessToken){
-                    console.log(id)
                     const response=await fetch(`http://localhost:8000/api/todo/${id}`,{
                             method:'patch',
                             
@@ -121,15 +117,20 @@ window.addEventListener('load',function(){
                             body:JSON.stringify({'status':event.target.checked})
 
                          });
-                    const data=await response.json()
-                    let finishedUl=document.querySelector('.finished-ul')
-                    let todoUl=document.querySelector('.todo-ul')
-                    let todoList=document.getElementById(`${data.id}`);            
-                    if(data.status){
+                    const data=await response.json();
+                    let finishedUl=document.querySelector('.finished-ul');
+                    let todoUl=document.querySelector('.todo-ul');
+                    let todoLi=document.querySelector(`#todo-${data.id}`);
 
-                            finishedUl.prepend(todoList)
+
+                    
+                    if(data.status){
+                            finishedUl.prepend(todoLi)
+
                     }else{
-                            todoUl.prepend(todoList)    
+
+                            todoUl.prepend(todoLi)   
+
                     }
 
 
@@ -142,8 +143,8 @@ window.addEventListener('load',function(){
         })
     }
     const checkInputTag=document.querySelectorAll('input[type="checkbox"]')
-    console.log(checkInputTag)
     changeStatus(checkInputTag)
+
 
 
 
@@ -198,7 +199,6 @@ window.addEventListener('load',function(){
                 todoUl.textContent=''
                 finishedUl.textContent=''
                 for(todo of data){
-                    console.log(todo.status)
                     if (todo.status===true){
                         createList(todoList,todo,finishedUl)
                     }else{
@@ -208,7 +208,6 @@ window.addEventListener('load',function(){
             })
             .then(()=>{
                 const checkInputTag=document.querySelectorAll('input[type="checkbox"]')
-                console.log(checkInputTag)
                 changeStatus(checkInputTag)            
             })
 
@@ -217,7 +216,7 @@ window.addEventListener('load',function(){
     function createList(todoList,todo,todoUl){
             let clonedList=todoList.cloneNode(true);
             clonedList.style=''
-            clonedList.setAttribute('id',`${todo.id}`)
+            clonedList.setAttribute('id',`todo-${todo.id}`)
             const input=clonedList.querySelector('input[type="checkbox"]')
             input.setAttribute('id',`${todo.id}`)
             input.checked=todo.status
@@ -226,4 +225,12 @@ window.addEventListener('load',function(){
             todoUl.append(clonedList)   
                             }
 
+    // reomove todo function
+    function removeTodo(){
+
+    }
+
+
+
+// end
 })
