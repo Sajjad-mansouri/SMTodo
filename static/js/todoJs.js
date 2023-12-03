@@ -35,19 +35,9 @@ window.addEventListener('load',function(){
                 
 
                 if (currentDate.toDateString()==todo_date){
-
-
                     let todoUl=document.querySelector('.todo-ul')
                     let todoList=document.querySelector('.todo-list');
-                    let clonedList=todoList.cloneNode(true);
-                    const checkbox = clonedList.querySelector('input[type="checkbox"]');
-                    checkbox.setAttribute('id',`${data.id}`)
-                    clonedList.style=''
-                    clonedList.className+= " " + `todo-${data.id}`
-                    let todoText=clonedList.querySelector('.todo-text');
-                    todoText.prepend(data.text);
-                    todoUl.prepend(clonedList)
-                    addEventElement(checkbox)
+                    createList(todoList,data,todoUl)
                 }
 
 
@@ -121,7 +111,7 @@ window.addEventListener('load',function(){
                 const id=event.target.attributes.id.value;
                 async function change(accessToken){
                     try{    
-
+                            console.log('change status')
                             const response=await fetch(`http://localhost:8000/api/todo/${id}`,{
                             method:'patch',
                             
@@ -135,17 +125,23 @@ window.addEventListener('load',function(){
                     const data=await response.json();
                     let finishedUl=document.querySelector('.finished-ul');
                     let todoUl=document.querySelector('.todo-ul');
-                    let todoLi=document.querySelector(`li.todo-${data.id}`);
-                    console.log(todoLi)
-
+                    let todoDiv=document.querySelector(`#div-${data.id}`);
+                    let collapse=todoDiv.lastElementChild;
+                    collapse.classList.add('collapse')
 
                     
                     if(data.status){
-                            finishedUl.prepend(todoLi)
+                            finishedUl.prepend(todoDiv)
+                            
+                            console.log(collapse)
+
+
+
 
                     }else{
 
-                            todoUl.prepend(todoLi)   
+                            todoUl.prepend(todoDiv) 
+                 
 
                     }
                     }catch(error){
@@ -227,14 +223,15 @@ window.addEventListener('load',function(){
                 for(todo of data){
                     if (todo.status===true){
                         createList(todoList,todo,finishedUl)
+                        
                     }else{
                         createList(todoList,todo,todoUl)
                     }
+
                 }
-            })
-            .then(()=>{
-                const checkInputTag=document.querySelectorAll('input[type="checkbox"]')
-                changeStatus(checkInputTag)            
+                collapse(finishedUl)
+                collapse(todoUl)
+
             })
 
 
@@ -242,13 +239,14 @@ window.addEventListener('load',function(){
     function createList(todoList,todo,todoUl){
             let clonedList=todoList.cloneNode(true);
             clonedList.style=''
-            clonedList.className+=" " + `todo-${todo.id}`
+            clonedList.setAttribute('id',`div-${todo.id}`)
             const input=clonedList.querySelector('input[type="checkbox"]')
             input.setAttribute('id',`${todo.id}`)
             input.checked=todo.status
             let todoText=clonedList.querySelector('.todo-text');
             todoText.append(todo.text);
-            todoUl.append(clonedList)   
+            todoUl.prepend(clonedList)
+            addEventElement(input)      
                             }
 
     // reomove todo function
@@ -257,9 +255,24 @@ window.addEventListener('load',function(){
     }
 
     const todoUl=document.querySelector('.todo-ul')
-    const li=todoUl.children
-    console.log(todoUl)
-    console.log(li)
+    const finishedUl=document.querySelector('.finished-ul')
+    collapse(todoUl)
+    collapse(finishedUl)
+
+    function collapse(ul){
+        const div=ul.querySelectorAll('.todo-list')
+        div.forEach((element)=>{
+            element.addEventListener('click',(e)=>{
+                console.log('toggle')
+
+                let collapse=element.lastElementChild
+                console.log(collapse)
+                collapse.classList.toggle('collapse')
+            })
+        })
+
+    }
+
 
 // end
 })

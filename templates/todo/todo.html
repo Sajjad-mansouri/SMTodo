@@ -51,26 +51,46 @@
               <div class="ps-content">
                  <p class="text-center my-3 "><a  class='previousDate'href=""></a> <i class="fa-regular fa-calendar-check"></i> <span class="currentDate" currentDate='{{day}}'>Today</span> <a  class='nextDate'href=""></a></p>
                 <!-- todo list template -->
-                  <li class="list-group-item todo-list" style="display:none">
-                    <div class="todo-indicator bg-warning"></div>
-                    <div class="widget-content p-0">
-                      <div class="widget-content-wrapper">
-                        <div class="widget-content-left mr-2">
-                          <div class="custom-checkbox custom-control">
-                            <input class="custom-control-input"
-                              id="exampleCustomCheckbox12" type="checkbox"><label class="custom-control-label"
-                              for="exampleCustomCheckbox12">&nbsp;</label>
-                            </div>
-                        </div>
-                        <div class="widget-content-left">
-                          <div class="widget-heading todo-text">
-                          </div>
-                          
-                        </div>
+                              <div class='todo-list' style="display:none">
+                                  <li class="list-group-item todo-{{todo.id}}" role="button"  >
+                                    <div class="todo-indicator bg-warning"></div>
+                                    <div class="widget-content p-0">
+                                      <div class="widget-content-wrapper">
+                                        <div class="widget-content-left mr-2">
+                                          <div class="custom-checkbox custom-control">
+                                            <input class="custom-control-input"
+                                               type="checkbox" 
 
-                      </div>
-                    </div>
-                  </li>
+                                              ><label class="custom-control-label"
+                                              for="exampleCustomCheckbox12">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                        <div class="widget-content-left">
+                                          <div class="widget-heading todo-text">
+                                          </div>
+                                          
+                                        </div>
+
+                                      </div>
+                                    </div>
+                                  </li>
+                        
+
+                              
+                                <div class="card card-body collapse" >
+                                      <div class="widget-content-right">
+                                        <button class="border-0 btn-transition btn btn-outline-success">
+                                  <i class="fa fa-check"></i></button>
+                                         <button class="border-0 btn-transition btn btn-outline-secondary">
+                                          <i class="fa-regular fa-pen-to-square"></i></button>
+                                          <button class="border-0 btn-transition btn btn-outline-danger">
+                                         <i class="fa fa-trash"></i>
+                                         
+                                        </button>
+                                      </div>
+                                </div>
+                              
+                              </div>
                 <!--end todo list template -->
 
 
@@ -88,8 +108,8 @@
                       <ul class=" list-group list-group-flush todo-ul">
                           {%for todo in todos %}
                           
-                              
-                                  <li class="list-group-item todo-{{todo.id}}" role="button"  >
+                              <div id='div-{{todo.id}}'class='todo-list'>
+                                  <li class="list-group-item " role="button"  >
                                     <div class="todo-indicator bg-warning"></div>
                                     <div class="widget-content p-0">
                                       <div class="widget-content-wrapper">
@@ -105,7 +125,7 @@
                                             </div>
                                         </div>
                                         <div class="widget-content-left">
-                                          <div class="widget-heading">{{todo.text}} 
+                                          <div class="widget-heading todo-text">{{todo.text}} 
                                           </div>
                                           
                                         </div>
@@ -116,7 +136,7 @@
                         
 
                               
-                                <div class="card card-body" style="display:none;">
+                                <div class="card card-body collapse" >
                                       <div class="widget-content-right">
                                         <button class="border-0 btn-transition btn btn-outline-success">
                                   <i class="fa fa-check"></i></button>
@@ -129,7 +149,7 @@
                                       </div>
                                 </div>
                               
-                        
+                              </div>
                           {%endfor%}
 
                       </ul>
@@ -139,8 +159,8 @@
                       <ul class=" list-group list-group-flush finished-ul">
                           {%for todo in finished %}
                                     
-                                        
-                                            <li class="list-group-item todo-{{todo.id}}"  role="button"  >
+                                        <div id='div-{{todo.id}}'class='todo-list'>
+                                            <li class="list-group-item "  role="button"  >
                                               <div class="todo-indicator bg-warning"></div>
                                               <div class="widget-content p-0">
                                                 <div class="widget-content-wrapper">
@@ -156,7 +176,7 @@
                                                       </div>
                                                   </div>
                                                   <div class="widget-content-left">
-                                                    <div class="widget-heading">{{todo.text}} 
+                                                    <div class="widget-heading todo-text">{{todo.text}} 
 
                                                 </div>
                                               </div>
@@ -164,7 +184,7 @@
                                      
 
                                         
-                                          <div class="card card-body" style="display:none;">
+                                          <div class="card card-body collapse" >
                                                 <div class="widget-content-right">
                                                   <button class="border-0 btn-transition btn btn-outline-success">
                                             <i class="fa fa-check"></i></button>
@@ -177,7 +197,7 @@
                                                 </div>
                                           </div>
                                         
-                                   
+                                        </div>
 
                           {%endfor%}
                       </ul>

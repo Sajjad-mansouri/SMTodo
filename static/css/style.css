@@ -175,3 +175,9 @@ input[type=checkbox] {
 li:hover{
     background-color: #8ADAB2;
 }
+
+
+.collapse{
+    transition: .5s ease;
+    display:none;
+}
