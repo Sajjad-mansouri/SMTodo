@@ -1,7 +1,7 @@
 
 window.addEventListener('load',function(){
     const form = document.getElementById('todo-form');
-
+    const closeDatePicker=document.querySelector('.close-date')
 
     form.addEventListener('submit',function(e){
         e.preventDefault();
@@ -127,11 +127,18 @@ window.addEventListener('load',function(){
     previousTag.addEventListener('click',(event) => dayNav(event,-1));
     nextTag.addEventListener('click',(event) => dayNav(event,+1));
 
-    function dayNav(event, number, ){
+    function dayNav(event, number, customDate){
         event.preventDefault()
-        currentTime.setDate(currentTime.getDate()+number)
-        currentTag.setAttribute('currentDate',currentTime.toISOString().substr(0,10))
 
+        if(customDate==undefined){
+            currentTime.setDate(currentTime.getDate()+number)
+            
+        }else{
+             currentTime=new Date(customDate)
+
+        }
+
+        currentTag.setAttribute('currentDate',currentTime.toISOString().substr(0,10))
         if(currentTime.getDate()== today.getDate()){
             currentTag.textContent='Today'
         }else{
@@ -164,6 +171,14 @@ window.addEventListener('load',function(){
 
 
     }
+
+
+    const datePicker =document.querySelector('#filterDate')
+    datePicker.addEventListener('change',(e)=>{
+        dayNav(e,0,e.target.value);
+        closeDatePicker.click()
+    })
+
     function createList(todoList,todo,todoUl){
             let clonedList=todoList.cloneNode(true);
             clonedList.style=''
