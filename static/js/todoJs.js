@@ -26,15 +26,9 @@ window.addEventListener('load',function(){
 
                     );
                 const data=await response.json()
-                const todo_date=new Date(data.date.date).toDateString()
                 button.click()
                 form.reset()
-                let currentTag=document.querySelector('.currentDate')
-                let currentDate=currentTag.getAttribute('currentDate')
-                currentDate=new Date(currentDate)
-                
-
-                if (currentDate.toDateString()==todo_date){
+                if (checkTodoDate(data)){
                     let todoUl=document.querySelector('.todo-ul')
                     let todoList=document.querySelector('.todo-div');
                     createList(todoList,data,todoUl)
@@ -53,6 +47,17 @@ window.addEventListener('load',function(){
             }
             });
     });
+
+    function checkTodoDate(data){
+                let currentTag=document.querySelector('.currentDate')
+                console.log(currentTag)
+                let currentDate=currentTag.getAttribute('currentDate')
+                console.log(currentDate)
+                console.log(data.date.date)
+                if (currentDate==data.date.date){
+                    return true
+                }       
+    }
 
     async function getToken(){
         try{
@@ -80,7 +85,6 @@ window.addEventListener('load',function(){
                     localStorage.setItem('access_token',accessToken);
                     return accessToken
                 } else{
-                    console.log('else')
                     window.location.href='http://localhost:8000/account/login'
                 }  
 
@@ -105,86 +109,7 @@ window.addEventListener('load',function(){
       return Date.now() > expirationTime;         
     };
 
-    function addEventElement(element){
-            const dataType=element.getAttribute('data-type')
-            if(element.type=='checkbox'){
-                element.addEventListener('change',(event)=>{
 
-                const id=event.target.attributes.id.value;
-                async function change(accessToken){
-                    try{    
-                            console.log('change status')
-                            const response=await fetch(`http://localhost:8000/api/todo/${id}`,{
-                            method:'patch',
-                            
-                            headers: {
-                                    "Content-Type": "application/json",
-                                    'Authorization': `Bearer ${accessToken}`
-                                  },
-                            body:JSON.stringify({'status':event.target.checked})
-
-                         });
-                    const data=await response.json();
-                    let finishedUl=document.querySelector('.finished-ul');
-                    let todoUl=document.querySelector('.todo-ul');
-                    let todoDiv=document.querySelector(`#div-${data.id}`);
-                    let collapse=todoDiv.lastElementChild;
-                    collapse.classList.add('collapse')
-
-                    
-                    if(data.status){
-                            finishedUl.prepend(todoDiv)
-                            
-                            console.log(collapse)
-
-
-
-
-                    }else{
-
-                            todoUl.prepend(todoDiv) 
-                 
-
-                    }
-                    }catch(error){
-                        console.log(error)
-                    }
-                }
-                getToken().then((accessToken)=>{
-                    
-                    if (accessToken !=undefined){
-                change(accessToken)
-            }
-                });
-                                                })    
-            }
-            if (dataType=='remove'){
-                const data=element.getAttribute('data')
-                
-                         element.addEventListener('click',()=>{
-                            getToken().then((accessToken)=>{ 
-                            if (accessToken !=undefined){
-                            remove(accessToken,data)
-                                                        }       
-                        });
-
-                        })  
-
-
-                }
-
-
-
-            }
-    
-    
-    function changeStatus(checkInputTag){
-        checkInputTag.forEach((element)=>{
-            addEventElement(element)
-        })
-    }
-    const checkInputTag=document.querySelectorAll('input[type="checkbox"]')
-    changeStatus(checkInputTag)
 
 
 
@@ -219,7 +144,7 @@ window.addEventListener('load',function(){
         nextTime.setDate(nextTime.getDate()+number)
 
         previousTag.textContent=previousTime.toLocaleDateString()
-        currentTag.setAttribute('currentDate', currentTime.toISOString());
+        currentTag.setAttribute('currentDate', currentTime.toISOString().substr(0,10));
         if(currentTime.getDate()== today.getDate()){
             currentTag.textContent='Today'
         }else{
@@ -259,25 +184,184 @@ window.addEventListener('load',function(){
             clonedList.style=''
             clonedList.setAttribute('id',`div-${todo.id}`)
             const input=clonedList.querySelector('input[type="checkbox"]')
-            const btnRemove=clonedList.querySelector('[data-type="remove"]')
-            btnRemove.setAttribute('data',`${todo.id}`)
+            const btns=clonedList.querySelectorAll('.btn')
+            btns.forEach((element)=>{
+                element.setAttribute('data',`${todo.id}`)
+            })
             input.setAttribute('id',`${todo.id}`)
             input.checked=todo.status
             let todoText=clonedList.querySelector('.todo-text');
             todoText.append(todo.text);
             todoUl.prepend(clonedList)
             addEventElement(input) 
-            addEventElement(btnRemove) 
+            addGroupListener(btns) 
             collapse(todoUl)
-
-           removeListener(btnRemoves)     
+   
                             }
 
+    function addEventElement(element){
+            const dataType=element.getAttribute('data-type')
+            const id=element.getAttribute('data')
+            if(element.type=='checkbox'){
+                element.addEventListener('change',(event)=>{
+                getToken().then((accessToken)=>{
+                    
+                    if (accessToken !=undefined){
+                            todoStatus(event,accessToken,id)
+                        }
+                    });
+                                                })    
+            }
+            if (dataType=='remove'){
+                
+                
+                         element.addEventListener('click',()=>{
+                            getToken().then((accessToken)=>{ 
+                            if (accessToken !=undefined){
+                            remove(accessToken,id)
+                                                        }       
+                        });
+
+                        })  
+                }
+            if (dataType=='update'){
+                element.addEventListener('click',()=>{
+                getToken().then((accessToken)=>{
+                    
+                    if (accessToken !=undefined){
+
+                            todoUpdateForm(event,accessToken,id)
+                        }
+                    });
+
+                })
+            }
+
+
+
+            }
+    
+    function fetchTodo(method,accessToken,id,body){
+
+        let path =''
+        if(id){
+
+            path=  `todo/${id}`
+        }
+
+        
+        return fetch('http://localhost:8000/api/'+path,{
+                            method:method,
+                            
+                            headers: {
+                                    "Content-Type": "application/json",
+                                    'Authorization': `Bearer ${accessToken}`
+                                  },
+                            body:body
+
+                         });
+    }
+
+    async function fetchPostTodo(id,accessToken,form){
+        let formData= new FormData(form);
+        let obj=Object.fromEntries(formData)
+        obj.date={'date':obj.date}
+        let body = JSON.stringify(obj);
+        
+        let method='PATCH'
+        let response=await fetchTodo(method,accessToken,id,body)
+        return response
+
+
+    }
+
+
+    async function todoStatus(event,accessToken,id){
+            try{ 
+                let method= 'patch'  
+                const id=event.target.attributes.id.value;
+                const body=JSON.stringify({'status':event.target.checked})
+                const response=await fetchTodo(method,accessToken,id,body);
+                const data=await response.json();
+
+                let finishedUl=document.querySelector('.finished-ul');
+                let todoUl=document.querySelector('.todo-ul');
+                let todoDiv=document.querySelector(`#div-${data.id}`);
+                let collapse=todoDiv.lastElementChild;
+                collapse.classList.add('collapse')
+
+                
+                if(data.status){
+                        finishedUl.prepend(todoDiv)
+                        
+
+
+
+
+
+                }else{
+
+                        todoUl.prepend(todoDiv) 
+             
+
+            }
+            }catch(error){
+                console.log(error)
+            }
+        }
+
+    async function todoUpdateForm(event,accessToken,id){
+            const modal=document.querySelector('button[data-bs-target="#TodoModalUpdate"]')
+            const form=document.forms['todoform']
+            const formContainer=document.querySelector('.form-container')
+            const clonedForm=form.cloneNode(true)
+            const response=await fetchTodo('GET',accessToken,id)
+            const data=await response.json();
+            
+            clonedForm.elements['text'].value=data.text
+            clonedForm.elements['date'].value=data.date.date
+            clonedForm.elements['priority'].value=data.priority
+            formContainer.textContent=''
+            formContainer.append(clonedForm)
+            modal.click()
+            clonedForm.addEventListener('submit',(e)=>{
+                e.preventDefault()
+                
+                updateTodo(id,accessToken,clonedForm)
+            })
+    }
+
+async function updateTodo(id,accessToken,form){
+    
+    const response= await fetchPostTodo(id,accessToken,form)
+    const close=document.querySelector('.close-update')
+    const div=document.querySelector(`#div-${id}`)
+    const data=await response.json()
+    if (response.ok){
+        if (checkTodoDate(data)){
+            
+            
+            const textDiv=div.querySelector('.todo-text')
+            textDiv.textContent=data.text
+            
+            form.reset()
+        }else{
+            div.remove()
+        }
+        close.click()
+    }
+
+}
+    // select remove button 
+    const checkInputTag=document.querySelectorAll('input[type="checkbox"]')
+    addGroupListener(checkInputTag)
+
     // reomove todo function
-   const btnRemoves=document.querySelectorAll('.btn-remove')
-   removeListener(btnRemoves)
-   function removeListener(btns){
-        btns.forEach((element)=>{
+   const btns=document.querySelectorAll('.btn')
+   addGroupListener(btns)
+
+   function addGroupListener(fn){
+        fn.forEach((element)=>{
             addEventElement(element)
         })
    }
@@ -308,10 +392,9 @@ async function remove(accessToken,data){
         const lists=ul.querySelectorAll('.todo-list')
         lists.forEach((element)=>{
             element.addEventListener('click',(e)=>{
-                console.log('toggle')
+                
 
                 let collapse=element.nextElementSibling
-                console.log(collapse)
                 collapse.classList.toggle('collapse')
             })
         })

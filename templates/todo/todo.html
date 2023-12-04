@@ -29,11 +29,13 @@
             <label class="text-secondary my-2 pr-2 view-opt-label">Filter</label>
 
             <select class="form-select btn btn-secondary my-2 mx-2">
-                <option value="all" selected>All</option>
+                <option value="all" selected>All </option>
                 <option value="completed">Completed</option>
                 <option value="active">Active</option>
             </select>
         </div>
+        
+
         <div class="col-auto d-flex align-items-center px-1 pr-3">
                   <form action="/action_page.php">
                     <input type="date" id="birthday" name="birthday">
@@ -49,7 +51,7 @@
           <perfect-scrollbar class="ps-show-limits">
             <div style="position: static;" class="ps ps--active-y">
               <div class="ps-content">
-                 <p class="text-center my-3 "><a  class='previousDate'href=""></a> <i class="fa-regular fa-calendar-check"></i> <span class="currentDate" currentDate='{{day}}'>Today</span> <a  class='nextDate'href=""></a></p>
+                 <p class="text-center my-3 "><a  class='previousDate'href=""></a> <i class="fa-regular fa-calendar-check"></i> <span class="currentDate" currentDate='{{day|date:"Y-m-d"}}'>Today</span> <a  class='nextDate'href=""></a></p>
                 <!-- todo list template -->
                               <div class='todo-div' style="display:none">
                                   <li class="list-group-item todo-list" role="button"  >
@@ -79,17 +81,16 @@
                               
                                 <div class="card card-body collapse" >
                                       <div class="widget-content-right">
-                                        <button class="border-0 btn-transition btn btn-outline-success">
+                                        <button class="border-0 btn-transition btn btn-outline-success" data-type='status' data=''>
                                   <i class="fa fa-check"></i></button>
-                                         <button class="border-0 btn-transition btn btn-outline-secondary">
+                                         <button class="border-0 btn-transition btn btn-outline-secondary" data-type='update' data=''>
                                           <i class="fa-regular fa-pen-to-square"></i></button>
-                                          <button class="border-0 btn-transition btn btn-outline-danger btn-remove" data-type='remove'>
+                                          <button class="border-0 btn-transition btn btn-outline-danger btn-remove" data-type='remove' data=''>
                                          <i class="fa fa-trash"></i>
                                          
                                         </button>
                                       </div>
                                 </div>
-                              
                               </div>
                 <!--end todo list template -->
 
@@ -138,9 +139,9 @@
                               
                                 <div class="card card-body collapse" >
                                       <div class="widget-content-right">
-                                        <button class="border-0 btn-transition btn btn-outline-success">
+                                        <button class="border-0 btn-transition btn btn-outline-success" data-type='status' data='{{todo.id}}'>
                                   <i class="fa fa-check"></i></button>
-                                         <button class="border-0 btn-transition btn btn-outline-secondary">
+                                         <button class="border-0 btn-transition btn btn-outline-secondary" data-type='update' data='{{todo.id}}'>
                                           <i class="fa-regular fa-pen-to-square"></i></button>
                                           <button class="border-0 btn-transition btn btn-outline-danger btn-remove" data-type='remove' data='{{todo.id}}'>
                                          <i class="fa fa-trash"></i>
@@ -184,18 +185,18 @@
                                      
 
                                         
-                                          <div class="card card-body collapse" >
-                                                <div class="widget-content-right">
-                                                  <button class="border-0 btn-transition btn btn-outline-success">
-                                            <i class="fa fa-check"></i></button>
-                                                   <button class="border-0 btn-transition btn btn-outline-secondary">
-                                                    <i class="fa-regular fa-pen-to-square"></i></button>
-                                                    <button class="border-0 btn-transition btn btn-outline-danger btn-remove" data-type='remove' data='{{todo.id}}'>
-                                                   <i class="fa fa-trash"></i>
-                                                   
-                                                  </button>
-                                                </div>
-                                          </div>
+                                    <div class="card card-body collapse" >
+                                      <div class="widget-content-right">
+                                        <button class="border-0 btn-transition btn btn-outline-success" data-type='status' data='{{todo.id}}'>
+                                  <i class="fa fa-check"></i></button>
+                                         <button class="border-0 btn-transition btn btn-outline-secondary" data-type='update' data='{{todo.id}}'>
+                                          <i class="fa-regular fa-pen-to-square"></i></button>
+                                          <button class="border-0 btn-transition btn btn-outline-danger btn-remove" data-type='remove' data='{{todo.id}}'>
+                                         <i class="fa fa-trash"></i>
+                                         
+                                        </button>
+                                      </div>
+                                </div>
                                         
                                         </div>
 
