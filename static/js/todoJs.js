@@ -37,8 +37,8 @@ window.addEventListener('load',function(){
 
 
             }catch(error){
-                console.log(error)
-                console.log('unable to send todo')
+                
+                
             }
         }
         getToken().then((accessToken)=>{
@@ -50,10 +50,10 @@ window.addEventListener('load',function(){
 
     function checkTodoDate(data){
                 let currentTag=document.querySelector('.currentDate')
-                console.log(currentTag)
+                
                 let currentDate=currentTag.getAttribute('currentDate')
-                console.log(currentDate)
-                console.log(data.date.date)
+                
+                
                 if (currentDate==data.date.date){
                     return true
                 }       
@@ -96,7 +96,7 @@ window.addEventListener('load',function(){
             
 
       }catch(error){
-               console.log('unable to getToken')
+               
 
             } 
     }
@@ -157,6 +157,7 @@ window.addEventListener('load',function(){
                 todoUl.textContent=''
                 finishedUl.textContent=''
                 for(todo of data){
+
                     if (todo.status===true){
                         createList(todoList,todo,finishedUl)
                         
@@ -186,10 +187,16 @@ window.addEventListener('load',function(){
             clonedList.style=''
             clonedList.setAttribute('id',`div-${todo.id}`)
             const btns=clonedList.querySelectorAll('.btn')
+            
             btns.forEach((element)=>{
                 element.setAttribute('data',`${todo.id}`)
                 if(element.getAttribute('data-type')=='status'){
-                    element.setAttribute('data-to',todo.status?'uncheck':'check')
+                    console.log('status',todo.status)
+                    let status=todo.status?'uncheck':'check'
+                    element.setAttribute('datato',status)
+
+                    createButtonIcon(element,todo.status?'fa-solid fa-rotate-left':'fa fa-check')
+
                 }
             })
             let todoText=clonedList.querySelector('.todo-text');
@@ -200,7 +207,9 @@ window.addEventListener('load',function(){
             }
             todoUl.prepend(clonedList)
             addGroupListener(btns) 
-            collapse(todoUl)
+            console.log(todoUl)
+
+            collapse(clonedList)
    
                             }
 
@@ -212,11 +221,15 @@ window.addEventListener('load',function(){
                 getToken().then((accessToken)=>{
                     
                     if (accessToken !=undefined){
-                        console.log(element)
-                        console.log(element.getAttribute('data-to'))
-                        let checked=element.getAttribute('data-to')==='check'
-                        console.log('checked',checked)
-                            todoStatus(element,checked,accessToken,id)
+                        
+                        console.log('data-to getAttribute',element.getAttribute('datato'))
+                        if(element.getAttribute('datato')==='check'){
+                            todoStatus(element,true,accessToken,id)
+                        }else{
+                            todoStatus(element,false,accessToken,id)
+                        }
+                        // let checked=element.getAttribute('datato')==='check'
+                    
                         }
                     });
                                                 })    
@@ -284,41 +297,53 @@ window.addEventListener('load',function(){
 
     }
 
+function createButtonIcon(element,className){
+        element.setAttribute('data-to','uncheck')
+        let tag=document.createElement('i')
+        tag.className=className
+        element.textContent=''
+        element.append(tag)    
+}
 
+    // change todo status from uncheck to checked ,then by check and uncheck change todo tab
     async function todoStatus(element,checked,accessToken,id){
             try{ 
-                console.log(checked)
+                
+                console.log('todostatus')
                 let method= 'patch'  
                 const body=JSON.stringify({'status':checked})
                 const response=await fetchTodo(method,accessToken,id,body);
                 const data=await response.json();
-
+                console.log(data)
                 let finishedUl=document.querySelector('.finished-ul');
                 let todoUl=document.querySelector('.todo-ul');
                 let todoDiv=document.querySelector(`#div-${data.id}`);
-                const check=todoDiv.querySelector('.fa-circle-check')
+                const checkedFont=todoDiv.querySelector('.fa-circle-check')
                 let collapse=todoDiv.lastElementChild;
                 collapse.classList.add('collapse')
-
+                
                 
                 if(data.status){
-                        check.classList.remove('ds-check')
-                        element.setAttribute('data-to','uncheck')
-
+                        checkedFont.classList.remove('ds-check')
+                        element.setAttribute('datato','uncheck')
+                        createButtonIcon(element,'fa-solid fa-rotate-left')
                         finishedUl.prepend(todoDiv)
 
                 }else{
-                        check.classList.add('ds-check')
-                        element.setAttribute('data-to','check')
+                        checkedFont.classList.add('ds-check')
+                        createButtonIcon(element,'fa fa-check')
+
+                        element.setAttribute('datato','check')
                         todoUl.prepend(todoDiv) 
              
 
             }
             }catch(error){
-                console.log(error)
+                
             }
         }
 
+// display update form with prepopulated fields that get from server
     async function todoUpdateForm(event,accessToken,id){
             const modal=document.querySelector('button[data-bs-target="#TodoModalUpdate"]')
             const form=document.forms['todoform']
@@ -340,6 +365,7 @@ window.addEventListener('load',function(){
             })
     }
 
+// modify todo then update current todolist if todo date is current date then close modal
 async function updateTodo(id,accessToken,form){
     
     const response= await fetchPostTodo(id,accessToken,form)
@@ -366,7 +392,9 @@ async function updateTodo(id,accessToken,form){
    addGroupListener(btns)
 
    function addGroupListener(fn){
+
         fn.forEach((element)=>{
+
             addEventElement(element)
         })
    }
@@ -393,14 +421,17 @@ async function remove(accessToken,data){
     collapse(finishedUl)
 
     function collapse(ul){
-
+        
         const lists=ul.querySelectorAll('.todo-list')
         lists.forEach((element)=>{
+            
             element.addEventListener('click',(e)=>{
-                
+                console.log('clicked')
 
                 let collapse=element.nextElementSibling
+                console.log(collapse)
                 collapse.classList.toggle('collapse')
+                
             })
         })
 
