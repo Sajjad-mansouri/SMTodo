@@ -205,7 +205,7 @@ window.addEventListener('load',function(){
             if(todo.status){
                 check.classList.remove('ds-check')
             }
-            todoUl.prepend(clonedList)
+            todoUl.append(clonedList)
             addGroupListener(btns) 
             console.log(todoUl)
 
