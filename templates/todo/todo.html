@@ -6,7 +6,7 @@
 {%block body%}
 
 <!--For Page-->
-<div class="container m-5 p-2 rounded mx-auto bg-light shadow" style="max-width: 60%;">
+<div class="container m-5 p-2 rounded mx-auto bg-light shadow" >
     <!-- App title section -->
     <div class="row m-1 p-4">
         <div class="col">
@@ -25,22 +25,8 @@
     
     <!-- View options section -->
     <div class="row m-1 p-3 px-5 justify-content-end">
-        <div class="col-auto d-flex align-items-center">
-            <label class="text-secondary my-2 pr-2 view-opt-label">Filter</label>
 
-            <select class="form-select btn btn-secondary my-2 mx-2">
-                <option value="all" selected>All </option>
-                <option value="completed">Completed</option>
-                <option value="active">Active</option>
-            </select>
-        </div>
-        
 
-        <div class="col-auto d-flex align-items-center px-1 pr-3">
-                  <form action="/action_page.php">
-                    <input type="date" id="birthday" name="birthday">
-                  </form>
-        </div>
     </div>
     <!-- Todo list section -->
 
@@ -51,7 +37,16 @@
           <perfect-scrollbar class="ps-show-limits">
             <div style="position: static;" class="ps ps--active-y">
               <div class="ps-content">
-                 <p class="text-center my-3 "><a  class='previousDate'href=""></a> <i class="fa-regular fa-calendar-check"></i> <span class="currentDate" currentDate='{{day|date:"Y-m-d"}}'>Today</span> <a  class='nextDate'href=""></a></p>
+
+                 <p class="text-center my-3 "><a  class='previousDate mx-3'href=""><i class="fa-solid fa-arrow-left"></i></a> <i class="fa-regular fa-calendar-check text-primary" data-bs-toggle="modal" data-bs-target="#DatePicker" role="button"></i> <span class="currentDate" currentDate='{{day|date:"Y-m-d"}}'>Today</span> <a  class='nextDate mx-3'href=""><i class="fa-solid fa-arrow-right"></i></a>
+                  
+
+                 
+                  </p>
+
+
+
+
                 <!-- todo list template -->
                               <div class='todo-div' style="display:none">
                                   <li class="list-group-item todo-list" role="button"  >
@@ -102,7 +97,9 @@
 
 
                     </div>
+
                   </nav>
+
                   <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
                       
@@ -213,6 +210,7 @@
             </div>
           </perfect-scrollbar>
         </div>
+
 
 
 </div>

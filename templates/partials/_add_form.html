@@ -1,6 +1,7 @@
 {% load crispy_forms_tags %}
 
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#TodoModal" >Add</button>
+
 <button style='display: none;'type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#TodoModalUpdate" ></button>
 
 <div class="modal fade" id="TodoModalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -18,7 +19,26 @@
     </div>
   </div>
 </div>
+
+
+
+<div class="modal fade" id="DatePicker" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Date</h1>
+        <input type="date" name="">
+        <button type="button" class="btn-close close-update" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body form-container">
+
+             
+         </div>
+      </form>
+    </div>
+  </div>
 </div>
+
 
 
 <div class="modal fade" id="TodoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

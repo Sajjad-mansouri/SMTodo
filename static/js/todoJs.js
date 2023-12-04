@@ -122,37 +122,22 @@ window.addEventListener('load',function(){
     var currentTag=document.querySelector('.currentDate');
 
     var currentTime=new Date();//today
-    var previousTime=new Date();//
-    var nextTime=new Date();
-
-    previousTime.setDate(previousTime.getDate()-1);
-    nextTime.setDate(nextTime.getDate()+1);
-
-    previousTag.textContent=previousTime.toLocaleDateString();
-    nextTag.textContent=nextTime.toLocaleDateString();
 
 
     previousTag.addEventListener('click',(event) => dayNav(event,-1));
     nextTag.addEventListener('click',(event) => dayNav(event,+1));
 
-
     function dayNav(event, number, ){
-        
-        event.preventDefault();
-        previousTime.setDate(previousTime.getDate()+number)
+        event.preventDefault()
         currentTime.setDate(currentTime.getDate()+number)
-        nextTime.setDate(nextTime.getDate()+number)
+        currentTag.setAttribute('currentDate',currentTime.toISOString().substr(0,10))
 
-        previousTag.textContent=previousTime.toLocaleDateString()
-        currentTag.setAttribute('currentDate', currentTime.toISOString().substr(0,10));
         if(currentTime.getDate()== today.getDate()){
             currentTag.textContent='Today'
         }else{
         currentTag.textContent=currentTime.toLocaleDateString()
 
         }
-        nextTag.textContent=nextTime.toLocaleDateString()
-
 
         fetch(`http://localhost:8000/api/${currentTime.toISOString()}`)
             .then(response=>{

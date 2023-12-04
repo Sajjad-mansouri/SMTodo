@@ -181,3 +181,7 @@ li:hover{
     transition: .5s ease;
     display:none;
 }
+
+a{
+    text-decoration: none;
+}
