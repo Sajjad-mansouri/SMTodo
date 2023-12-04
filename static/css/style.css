@@ -185,3 +185,8 @@ li:hover{
 a{
     text-decoration: none;
 }
+
+
+.ds-check{
+    display: none;
+}

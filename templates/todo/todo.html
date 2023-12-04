@@ -53,17 +53,10 @@
                                     <div class="todo-indicator bg-warning"></div>
                                     <div class="widget-content p-0">
                                       <div class="widget-content-wrapper">
-                                        <div class="widget-content-left mr-2">
-                                          <div class="custom-checkbox custom-control">
-                                            <input class="custom-control-input"
-                                               type="checkbox" 
-
-                                              ><label class="custom-control-label"
-                                              for="exampleCustomCheckbox12">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                        <div class="widget-content-left">
+                                      <i class="fa-regular fa-circle-check text-success ds-check"></i>
+                                        <div class="widget-content-left ms-2">
                                           <div class="widget-heading todo-text">
+                                            
                                           </div>
                                           
                                         </div>
@@ -111,18 +104,8 @@
                                     <div class="todo-indicator bg-warning"></div>
                                     <div class="widget-content p-0">
                                       <div class="widget-content-wrapper">
-                                        <div class="widget-content-left mr-2">
-                                          <div class="custom-checkbox custom-control">
-                                            <input class="custom-control-input"
-                                               type="checkbox" id='{{todo.id}}'
-                                              {%if todo.status%}
-                                              checked
-                                              {%endif%}
-                                              ><label class="custom-control-label"
-                                              for="exampleCustomCheckbox12">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                        <div class="widget-content-left">
+                                   <i class="fa-regular fa-circle-check text-success ds-check"></i>
+                                        <div class="widget-content-left ms-2">
                                           <div class="widget-heading todo-text">{{todo.text}} 
                                           </div>
                                           
@@ -136,9 +119,9 @@
                               
                                 <div class="card card-body collapse" >
                                       <div class="widget-content-right">
-                                        <button class="border-0 btn-transition btn btn-outline-success" data-type='status' data='{{todo.id}}'>
+                                        <button class="border-0 btn-transition btn btn-outline-success" data-type='status' data='{{todo.id}}' data-to='check'>
                                   <i class="fa fa-check"></i></button>
-                                         <button class="border-0 btn-transition btn btn-outline-secondary" data-type='update' data='{{todo.id}}'>
+                                         <button class="border-0 btn-transition btn btn-outline-secondary" data-type='update' data='{{todo.id}}' >
                                           <i class="fa-regular fa-pen-to-square"></i></button>
                                           <button class="border-0 btn-transition btn btn-outline-danger btn-remove" data-type='remove' data='{{todo.id}}'>
                                          <i class="fa fa-trash"></i>
@@ -162,19 +145,12 @@
                                               <div class="todo-indicator bg-warning"></div>
                                               <div class="widget-content p-0">
                                                 <div class="widget-content-wrapper">
-                                                  <div class="widget-content-left mr-2">
-                                                    <div class="custom-checkbox custom-control">
-                                                      <input class="custom-control-input"
-                                                         type="checkbox" id='{{todo.id}}'
-                                                        {%if todo.status%}
-                                                        checked
-                                                        {%endif%}
-                                                        ><label class="custom-control-label"
-                                                        for="exampleCustomCheckbox12">&nbsp;</label>
-                                                      </div>
-                                                  </div>
-                                                  <div class="widget-content-left">
-                                                    <div class="widget-heading todo-text">{{todo.text}} 
+
+                                                    <i class="fa-regular fa-circle-check text-success"></i>
+                                                  <div class="widget-content-left ms-2">
+                                                    <div class="widget-heading todo-text">
+                                                      {{todo.text}} 
+
 
                                                 </div>
                                               </div>
@@ -184,7 +160,7 @@
                                         
                                     <div class="card card-body collapse" >
                                       <div class="widget-content-right">
-                                        <button class="border-0 btn-transition btn btn-outline-success" data-type='status' data='{{todo.id}}'>
+                                        <button class="border-0 btn-transition btn btn-outline-success" data-type='status' data-to='uncheck' data='{{todo.id}}'>
                                   <i class="fa fa-check"></i></button>
                                          <button class="border-0 btn-transition btn btn-outline-secondary" data-type='update' data='{{todo.id}}'>
                                           <i class="fa-regular fa-pen-to-square"></i></button>

@@ -179,21 +179,26 @@ window.addEventListener('load',function(){
         closeDatePicker.click()
     })
 
+
     function createList(todoList,todo,todoUl){
             let clonedList=todoList.cloneNode(true);
+
             clonedList.style=''
             clonedList.setAttribute('id',`div-${todo.id}`)
-            const input=clonedList.querySelector('input[type="checkbox"]')
             const btns=clonedList.querySelectorAll('.btn')
             btns.forEach((element)=>{
                 element.setAttribute('data',`${todo.id}`)
+                if(element.getAttribute('data-type')=='status'){
+                    element.setAttribute('data-to',todo.status?'uncheck':'check')
+                }
             })
-            input.setAttribute('id',`${todo.id}`)
-            input.checked=todo.status
             let todoText=clonedList.querySelector('.todo-text');
+            let check=clonedList.querySelector('.fa-circle-check')
             todoText.append(todo.text);
+            if(todo.status){
+                check.classList.remove('ds-check')
+            }
             todoUl.prepend(clonedList)
-            addEventElement(input) 
             addGroupListener(btns) 
             collapse(todoUl)
    
@@ -202,12 +207,16 @@ window.addEventListener('load',function(){
     function addEventElement(element){
             const dataType=element.getAttribute('data-type')
             const id=element.getAttribute('data')
-            if(element.type=='checkbox'){
-                element.addEventListener('change',(event)=>{
+            if(dataType=='status'){
+                element.addEventListener('click',(event)=>{
                 getToken().then((accessToken)=>{
                     
                     if (accessToken !=undefined){
-                            todoStatus(event,accessToken,id)
+                        console.log(element)
+                        console.log(element.getAttribute('data-to'))
+                        let checked=element.getAttribute('data-to')==='check'
+                        console.log('checked',checked)
+                            todoStatus(element,checked,accessToken,id)
                         }
                     });
                                                 })    
@@ -276,31 +285,31 @@ window.addEventListener('load',function(){
     }
 
 
-    async function todoStatus(event,accessToken,id){
+    async function todoStatus(element,checked,accessToken,id){
             try{ 
+                console.log(checked)
                 let method= 'patch'  
-                const id=event.target.attributes.id.value;
-                const body=JSON.stringify({'status':event.target.checked})
+                const body=JSON.stringify({'status':checked})
                 const response=await fetchTodo(method,accessToken,id,body);
                 const data=await response.json();
 
                 let finishedUl=document.querySelector('.finished-ul');
                 let todoUl=document.querySelector('.todo-ul');
                 let todoDiv=document.querySelector(`#div-${data.id}`);
+                const check=todoDiv.querySelector('.fa-circle-check')
                 let collapse=todoDiv.lastElementChild;
                 collapse.classList.add('collapse')
 
                 
                 if(data.status){
+                        check.classList.remove('ds-check')
+                        element.setAttribute('data-to','uncheck')
+
                         finishedUl.prepend(todoDiv)
-                        
-
-
-
-
 
                 }else{
-
+                        check.classList.add('ds-check')
+                        element.setAttribute('data-to','check')
                         todoUl.prepend(todoDiv) 
              
 
@@ -352,11 +361,7 @@ async function updateTodo(id,accessToken,form){
     }
 
 }
-    // select remove button 
-    const checkInputTag=document.querySelectorAll('input[type="checkbox"]')
-    addGroupListener(checkInputTag)
 
-    // reomove todo function
    const btns=document.querySelectorAll('.btn')
    addGroupListener(btns)
 
