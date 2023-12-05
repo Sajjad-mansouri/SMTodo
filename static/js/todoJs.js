@@ -437,6 +437,18 @@ async function remove(accessToken,data){
 
     }
 
+const profile=document.querySelector('.avatar')
+const profileDrop=document.querySelector('.profile-drop')
+profile.addEventListener('click',()=>{
+
+    profileDrop.classList.toggle('active')
+})
+window.addEventListener('mouseup',(event)=>{
+
+    if(event.target!= profileDrop && event.target!=profile && event.target.parentNode!=profileDrop){
+        profileDrop.classList.toggle('active')
+    } 
+})
 
 // end
 })
