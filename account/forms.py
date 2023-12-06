@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 from django import forms  
+from .models import UserInfo
 
 
 
@@ -35,3 +36,14 @@ class CustomCreationForm(UserCreationForm):
 				Column('password2', css_class='form-outline mb-4')),
 			Submit('submit', 'Sign Up')
 		)
+
+class UserForm(forms.ModelForm):
+	class Meta:
+		model=get_user_model()
+		fields=['first_name','last_name','username','email']
+
+class UserInfoForm(forms.ModelForm):
+
+	class Meta:
+		model=UserInfo
+		fields=['profile_image']

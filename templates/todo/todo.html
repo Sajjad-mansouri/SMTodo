@@ -1,52 +1,15 @@
-{%extends 'base.html'%}
-
-{%block title%}
-{%endblock%}
-
-{%block body%}
-
-<!--For Page-->
-<div class="container m-5 p-2 rounded mx-auto bg-light shadow" >
-
-    <!-- App title section -->
-    <div class="row m-1 p-4">
-        <div class="col">
-            <div style="float:left;">
-                    
-
-<img src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp" class="rounded-circle shadow-4 avatar"
-  style="width: 50px;" alt="Avatar" />   
-
-    
-    <div class="profile-drop">
-      <a href="" class="prfile-btn">logout</a>
-      <a href="" class="prfile-btn">logout</a>
-    </div>
-
-    
-     
-              </div>
-            <div class="p-1 h1 text-primary text-center mx-auto display-inline-block" >
+{%extends 'todo/base_todo.html'%}
 
 
-
-                <i class="fa fa-check bg-primary text-white rounded p-2"></i>
-                <u>My Todo-s</u>
-            </div>
-        </div>
-    </div>
+{%block content%}
     <div class="row m-1 p-3">
-    <!-- Create todo section -->
-    {%include 'partials/_add_form.html'%}
+      <!-- Create todo section -->
+      {%include 'partials/_add_form.html'%}
 
     </div>
     <div class="p-2 mx-4 border-black-25 border-bottom"></div>
     
     <!-- View options section -->
-    <div class="row m-1 p-3 px-5 justify-content-end">
-
-
-    </div>
     <!-- Todo list section -->
 
       
@@ -60,46 +23,46 @@
                  <p class="text-center my-3 "><a  class='previousDate mx-3'href=""><i class="fa-solid fa-arrow-left"></i></a> <i class="fa-regular fa-calendar-check text-primary " data-bs-toggle="modal" data-bs-target="#DatePicker" role="button"></i> <span class="currentDate" currentDate='{{day|date:"Y-m-d"}}'>Today</span> <a  class='nextDate mx-3'href=""><i class="fa-solid fa-arrow-right"></i></a>
                   
 
-                 
+
                   </p>
 
 
 
 
-                <!-- todo list template -->
-                              <div class='todo-div' style="display:none">
-                                  <li class="list-group-item todo-list" role="button"  >
-                                    <div class="todo-indicator bg-warning"></div>
-                                    <div class="widget-content p-0">
-                                      <div class="widget-content-wrapper">
-                                      <i class="fa-regular fa-circle-check text-success ds-check"></i>
-                                        <div class="widget-content-left ms-2">
-                                          <div class="widget-heading todo-text">
-                                            
-                                          </div>
-                                          
-                                        </div>
-
-                                      </div>
-                                    </div>
-                                  </li>
-                        
-
-                              
-                                <div class="card card-body collapse" >
-                                      <div class="widget-content-right">
-                                        <button class="border-0 btn-transition btn btn-outline-success" data-type='status' data=''>
-                                  <i class="fa fa-check"></i></button>
-                                         <button class="border-0 btn-transition btn btn-outline-secondary" data-type='update' data=''>
-                                          <i class="fa-regular fa-pen-to-square"></i></button>
-                                          <button class="border-0 btn-transition btn btn-outline-danger btn-remove" data-type='remove' data=''>
-                                         <i class="fa fa-trash"></i>
-                                         
-                                        </button>
-                                      </div>
-                                </div>
+                  <!-- todo list template -->
+                  <div class='todo-div' style="display:none">
+                      <li class="list-group-item todo-list" role="button"  >
+                        <div class="todo-indicator bg-warning"></div>
+                        <div class="widget-content p-0">
+                          <div class="widget-content-wrapper">
+                          <i class="fa-regular fa-circle-check text-success ds-check"></i>
+                            <div class="widget-content-left ms-2">
+                              <div class="widget-heading todo-text">
+                                
                               </div>
-                <!--end todo list template -->
+                              
+                            </div>
+
+                          </div>
+                        </div>
+                      </li>
+            
+
+                  
+                      <div class="card card-body collapse" >
+                            <div class="widget-content-right">
+                              <button class="border-0 btn-transition btn btn-outline-success" data-type='status' data=''>
+                        <i class="fa fa-check"></i></button>
+                               <button class="border-0 btn-transition btn btn-outline-secondary" data-type='update' data=''>
+                                <i class="fa-regular fa-pen-to-square"></i></button>
+                                <button class="border-0 btn-transition btn btn-outline-danger btn-remove" data-type='remove' data=''>
+                               <i class="fa fa-trash"></i>
+                               
+                              </button>
+                            </div>
+                      </div>
+                  </div>
+                  <!--end todo list template -->
 
 
                   <nav>
@@ -177,17 +140,17 @@
                                      
 
                                         
-                                    <div class="card card-body collapse" >
-                                      <div class="widget-content-right">
-                                        <button class="border-0 btn-transition btn btn-outline-success" data-type='status' datato='uncheck' data='{{todo.id}}'>
-                                  <i class="fa-solid fa-rotate-left"></i></button>
-                                         <button class="border-0 btn-transition btn btn-outline-secondary" data-type='update' data='{{todo.id}}'>
-                                          <i class="fa-regular fa-pen-to-square"></i></button>
-                                          <button class="border-0 btn-transition btn btn-outline-danger btn-remove" data-type='remove' data='{{todo.id}}'>
-                                         <i class="fa fa-trash"></i>
-                                         
-                                        </button>
-                                      </div>
+                                          <div class="card card-body collapse" >
+                                              <div class="widget-content-right">
+                                                <button class="border-0 btn-transition btn btn-outline-success" data-type='status' datato='uncheck' data='{{todo.id}}'>
+                                                <i class="fa-solid fa-rotate-left"></i></button>
+                                                 <button class="border-0 btn-transition btn btn-outline-secondary" data-type='update' data='{{todo.id}}'>
+                                                  <i class="fa-regular fa-pen-to-square"></i></button>
+                                                  <button class="border-0 btn-transition btn btn-outline-danger btn-remove" data-type='remove' data='{{todo.id}}'>
+                                                 <i class="fa fa-trash"></i>
+                                                 
+                                                </button>
+                                              </div>
                                 </div>
                                         
                                         </div>
@@ -197,16 +160,11 @@
                     </div>
 
                   </div>
-
-
-
               </div>
-              
             </div>
           </perfect-scrollbar>
         </div>
 
 
 
-</div>
 {%endblock%}

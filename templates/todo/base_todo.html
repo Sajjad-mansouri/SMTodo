@@ -1,0 +1,45 @@
+
+
+{%extends 'base.html'%}
+
+{%block title%}
+{%endblock%}
+
+{%block body%}
+
+<!--For Page-->
+<div class="container m-5 p-2 rounded mx-auto bg-light shadow" >
+
+    <!-- App title section -->
+    <div class="row m-1 p-4">
+        <div class="col">
+            <div style="float:left;">
+                    
+
+                <img src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp" class="rounded-circle shadow-4 avatar"
+                  style="width: 50px;" alt="Avatar" />   
+
+                    
+                    <div class="profile-drop">
+                      <a href="{%url 'profile'%}" class="prfile-btn">profile</a>
+                      <a href="" class="prfile-btn">logout</a>
+                    </div>
+
+    
+     
+              </div>
+            <div class="p-1 h1 text-primary text-center mx-auto display-inline-block" >
+
+
+
+                <i class="fa fa-check bg-primary text-white rounded p-2"></i>
+                <u>My Todo-s</u>
+            </div>
+        </div>
+        {%block content%}
+		{%endblock%}
+    </div>
+
+
+</div>
+{%endblock%}

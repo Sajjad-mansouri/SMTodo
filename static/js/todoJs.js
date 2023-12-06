@@ -446,7 +446,7 @@ profile.addEventListener('click',()=>{
 window.addEventListener('mouseup',(event)=>{
 
     if(event.target!= profileDrop && event.target!=profile && event.target.parentNode!=profileDrop){
-        profileDrop.classList.toggle('active')
+        profileDrop.classList.remove('active')
     } 
 })
 
