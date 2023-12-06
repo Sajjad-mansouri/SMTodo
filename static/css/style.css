@@ -239,3 +239,7 @@ a{
     padding: 10px 30px;
   }
 }
+
+.messages{
+    display: none;
+}

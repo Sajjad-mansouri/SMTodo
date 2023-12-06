@@ -66,5 +66,10 @@ class UserSerializer(serializers.ModelSerializer):
             instance.userinfo=userinfo
         except Exception as e:
             print(e)
-
+        instance.save()
         return instance
+    def to_internal_value(self,data):
+        print(data)
+        if data.get('profile_image'):
+            data={'userinfo':{'profile_image':data['profile_image']}}
+        return super().to_internal_value(data)

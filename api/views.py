@@ -57,19 +57,5 @@ class UserAPIView(generics.RetrieveUpdateAPIView):
     def get_queryset(self):
         return UserModel.objects.filter(username=self.request.user.username)
 
-    def patch(self,request,*args,**kwargs):
 
-        instance = self.get_object()
-
-        profile_image_data = request.data['profile_image']
-        print(profile_image_data)
-
-
-        userinfo=UserInfo.objects.get(user=self.request.user)
-
-        serializer = UserInfoSerializer(userinfo,data={'profile_image': profile_image_data}, partial=True)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-
-        return Response(serializer.data)
 
