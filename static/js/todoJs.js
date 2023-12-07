@@ -1,8 +1,13 @@
-import {todoHeader} from './header.js'
-import { getToken } from './get-token.js';
+import { getToken,login } from './get-token.js';
+
 window.addEventListener('load', function() {
     const form = document.getElementById('todo-form');
     const closeDatePicker = document.querySelector('.close-date')
+    const loginForm=document.querySelector('.login')
+    if (loginForm){
+        loginForm.addEventListener('submit',(event)=>login(event))
+    }
+    
 
     form.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -388,23 +393,6 @@ window.addEventListener('load', function() {
 
     }
 
-    function dropDownProfile() {
-        const profile = document.querySelector('.avatar')
-        const profileDrop = document.querySelector('.profile-drop')
-        profile.addEventListener('click', () => {
-
-            profileDrop.classList.toggle('active')
-        })
-        window.addEventListener('mouseup', (event) => {
-
-            if (event.target != profileDrop && event.target != profile && event.target.parentNode != profileDrop) {
-                profileDrop.classList.remove('active')
-            }
-        })
-
-    }
-    dropDownProfile()
-
-    todoHeader()
+    
     // end
 })

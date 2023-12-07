@@ -24,7 +24,7 @@ class ToDo(LoginRequiredMixin,CreateView):
 		today=timezone.now().date()
 		user=self.request.user
 		try:
-			todos=Todo.objects.filter(Q(user=self.request.user)& Q(date__date=today))
+			todos=Todo.objects.filter(Q(user=self.request.user)& Q(date__date=today)).select_related('date')
 		except :
 
 			todos=None

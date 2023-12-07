@@ -1,22 +1,10 @@
 import { getToken } from './get-token.js';
-import {profileHeader} from './header.js'
+import {profileHeader,todoHeader,dropDownProfile} from './header.js'
 
 //dropdown
-export function dropDownProfile() {
-    const profile = document.querySelector('.avatar')
-    const profileDrop = document.querySelector('.profile-drop')
-    profile.addEventListener('click', () => {
+dropDownProfile()
 
-        profileDrop.classList.toggle('active')
-    })
-    window.addEventListener('mouseup', (event) => {
 
-        if (event.target != profileDrop && event.target != profile && event.target.parentNode != profileDrop) {
-            profileDrop.classList.remove('active')
-        }
-    })
-
-}
 if (window.location.pathname.includes('profile')) {
 
     const imageBtn = document.querySelector('button[type="button"]');
@@ -119,6 +107,7 @@ if (window.location.pathname.includes('profile')) {
 
     // update profile dropdown and page title
 	profileHeader()
-    dropDownProfile()
 
+}else{
+    todoHeader()
 }

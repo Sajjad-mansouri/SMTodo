@@ -30,3 +30,22 @@ function header(profileHref,profileBtn,tagClassName,headerText) {
     header.append(tag)
     header.append(u)
 }
+
+
+export function dropDownProfile() {
+
+    const profile = document.querySelector('.avatar')
+    const profileDrop = document.querySelector('.profile-drop')
+    profile.addEventListener('click', () => {
+
+        profileDrop.classList.toggle('active')
+    })
+    window.addEventListener('mouseup', (event) => {
+
+        if (event.target != profileDrop && event.target != profile && event.target.parentNode != profileDrop) {
+            profileDrop.classList.remove('active')
+            console.log('run')
+        }
+    })
+
+}

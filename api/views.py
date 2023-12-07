@@ -37,7 +37,6 @@ class TodoAPIList(generics.ListCreateAPIView):
             queryset= None
         return queryset
     def perform_create(self, serializer):
-        print('perform_create todoview')
         serializer.save(user=self.request.user)
 
 
