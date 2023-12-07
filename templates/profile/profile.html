@@ -1,4 +1,5 @@
 {%extends 'todo/base_todo.html'%}
+{%load static%}
 {%block content%}
 <div class="p-2 mx-4 border-black-25 border-bottom"></div>
 <div class="row">
@@ -13,6 +14,8 @@
                                     <img src="
                       {%if user.userinfo.profile_image%}
                         {{user.userinfo.profile_image.url}}
+                        {%else%}
+                       {%static 'img/profile_image/blank-profile.png'%}
                       {%endif%}
                       " style="height: 140px;" class='profile_image'>
                                 </div>

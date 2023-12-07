@@ -22,6 +22,7 @@ if (window.location.pathname.includes('profile')) {
     const imageBtn = document.querySelector('button[type="button"]');
     const imgInput = document.querySelector('input[type="file"]');
     const img = document.querySelector(".profile_image")
+    const avater=document.querySelector('.avatar')
     const user = document.querySelector('#user').textContent
 
     // image profile change
@@ -48,6 +49,7 @@ if (window.location.pathname.includes('profile')) {
                         console.log(data)
                         console.log(img)
                         img.src = data.userinfo.profile_image
+                        avater.src=data.userinfo.profile_image
                     })
                     .catch(error => console.log(error))
 

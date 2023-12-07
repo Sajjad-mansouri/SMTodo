@@ -10,6 +10,7 @@ from django.views.generic import TemplateView
 from django.core.exceptions import  ValidationError
 from django.http import HttpResponseRedirect
 from .tasks import send_email
+from .models import UserInfo
 
 
 UserModel = get_user_model()

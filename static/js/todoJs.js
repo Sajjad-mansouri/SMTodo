@@ -1,4 +1,5 @@
 import {todoHeader} from './header.js'
+import { getToken } from './get-token.js';
 window.addEventListener('load', function() {
     const form = document.getElementById('todo-form');
     const closeDatePicker = document.querySelector('.close-date')
@@ -59,60 +60,6 @@ window.addEventListener('load', function() {
         }
     }
 
-    async function getToken() {
-        try {
-
-            var accessToken = localStorage.getItem('access_token');
-            const refreshToken = localStorage.getItem('refresh_token');
-
-            if (!refreshToken) {
-                window.location.href = 'http://localhost:8000/account/login'
-            }
-
-            if (accessToken == 'undefined' || isTokenExpired(accessToken)) {
-
-                const response = await fetch('http://localhost:8000/api/token/refresh/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ refresh: refreshToken })
-                })
-
-                if (response.ok) {
-                    const data = await response.json();
-                    accessToken = await data.access;
-                    localStorage.setItem('access_token', accessToken);
-                    return accessToken
-                } else {
-                    window.location.href = 'http://localhost:8000/account/login'
-                }
-
-
-
-            } else {
-                return accessToken
-            }
-
-
-        } catch (error) {
-
-
-        }
-    }
-
-    function isTokenExpired(token) {
-
-
-        const decodedToken = JSON.parse(atob(token.split('.')[1]));
-        const expirationTime = decodedToken.exp * 1000;
-        return Date.now() > expirationTime;
-    };
-
-
-
-
-
 
     // daynav functions
 
@@ -145,18 +92,23 @@ window.addEventListener('load', function() {
             currentTag.textContent = currentTime.toLocaleDateString()
 
         }
-
-        fetch(`http://localhost:8000/api/${currentTime.toISOString()}`)
+         getToken().then((accessToken) => {
+        fetch(`http://localhost:8000/api/${currentTime.toISOString()}`,{
+            headers:{
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
             .then(response => {
                 return response.json()
             })
             .then(data => {
+                console.log(data)
                 let todoUl = document.querySelector('.todo-ul')
                 let finishedUl = document.querySelector('.finished-ul')
                 let todoList = document.querySelector('.todo-div');
                 todoUl.textContent = ''
                 finishedUl.textContent = ''
-                for (todo of data) {
+                for (const todo of data) {
 
                     if (todo.status === true) {
                         createList(todoList, todo, finishedUl)
@@ -169,7 +121,7 @@ window.addEventListener('load', function() {
 
 
             })
-
+})
 
     }
 
@@ -267,7 +219,6 @@ window.addEventListener('load', function() {
 
         let path = ''
         if (id) {
-
             path = `todo/${id}`
         }
 
