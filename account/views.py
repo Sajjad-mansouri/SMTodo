@@ -38,7 +38,6 @@ class Profile(LoginRequiredMixin,SuccessMessageMixin,UpdateView):
 		return reverse('profile',args=(self.request.user.pk,))
 
 	def get_object(self,queryset=None):
-		print(self.request.user.userinfo)
 		return self.request.user
 	def get_context_data(self,**kwargs):
 		context=super().get_context_data(**kwargs)

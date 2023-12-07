@@ -5,6 +5,6 @@ from .models import Todo,Day
 @admin.register(Todo)
 class ToDoAdmin(admin.ModelAdmin):
 
-	list_filter=['priority','user',]
+	list_filter=['user',]
 
 admin.site.register(Day)

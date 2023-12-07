@@ -1,58 +1,60 @@
-import { getToken,login } from './get-token.js';
+import { getToken, login } from './get-token.js';
 
 window.addEventListener('load', function() {
     const form = document.getElementById('todo-form');
     const closeDatePicker = document.querySelector('.close-date')
-    const loginForm=document.querySelector('.login')
-    if (loginForm){
-        loginForm.addEventListener('submit',(event)=>login(event))
+    const loginForm = document.querySelector('.login')
+    if (loginForm) {
+        loginForm.addEventListener('submit', (event) => login(event))
     }
-    
 
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
 
-        const button = document.querySelector('button')
-        const formData = new FormData(form);
-        const obj = Object.fromEntries(formData)
-        obj.date = { 'date': obj.date }
-        var json = JSON.stringify(obj);
-        async function addTodo(accessToken) {
-            try {
-                const response = await fetch("http://localhost:8000/api/", {
-                        method: 'POST',
+            const button = document.querySelector('button')
+            const formData = new FormData(form);
+            const obj = Object.fromEntries(formData)
+            obj.date = { 'date': obj.date }
+            var json = JSON.stringify(obj);
+            async function addTodo(accessToken) {
+                try {
+                    const response = await fetch("http://localhost:8000/api/", {
+                            method: 'POST',
 
-                        headers: {
-                            "Content-Type": "application/json",
-                            'Authorization': `Bearer ${accessToken}`
-                        },
-                        body: json
+                            headers: {
+                                "Content-Type": "application/json",
+                                'Authorization': `Bearer ${accessToken}`
+                            },
+                            body: json
 
+                        }
+
+                    );
+                    const data = await response.json()
+                    button.click()
+                    form.reset()
+                    if (checkTodoDate(data)) {
+                        let todoUl = document.querySelector('.todo-ul')
+                        let todoList = document.querySelector('.todo-div');
+                        createList(todoList, data, todoUl)
                     }
 
-                );
-                const data = await response.json()
-                button.click()
-                form.reset()
-                if (checkTodoDate(data)) {
-                    let todoUl = document.querySelector('.todo-ul')
-                    let todoList = document.querySelector('.todo-div');
-                    createList(todoList, data, todoUl)
+
+
+                } catch (error) {
+
+
                 }
-
-
-
-            } catch (error) {
-
-
             }
-        }
-        getToken().then((accessToken) => {
-            if (accessToken != undefined) {
-                addTodo(accessToken)
-            }
+            getToken().then((accessToken) => {
+                if (accessToken != undefined) {
+                    addTodo(accessToken)
+                }
+            });
         });
-    });
+    }
+
 
     function checkTodoDate(data) {
         let currentTag = document.querySelector('.currentDate')
@@ -97,36 +99,36 @@ window.addEventListener('load', function() {
             currentTag.textContent = currentTime.toLocaleDateString()
 
         }
-         getToken().then((accessToken) => {
-        fetch(`http://localhost:8000/api/${currentTime.toISOString()}`,{
-            headers:{
-                'Authorization': `Bearer ${accessToken}`
-            }
-        })
-            .then(response => {
-                return response.json()
-            })
-            .then(data => {
-                console.log(data)
-                let todoUl = document.querySelector('.todo-ul')
-                let finishedUl = document.querySelector('.finished-ul')
-                let todoList = document.querySelector('.todo-div');
-                todoUl.textContent = ''
-                finishedUl.textContent = ''
-                for (const todo of data) {
+        getToken().then((accessToken) => {
+            fetch(`http://localhost:8000/api/${currentTime.toISOString()}`, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                })
+                .then(response => {
+                    return response.json()
+                })
+                .then(data => {
+                    console.log(data)
+                    let todoUl = document.querySelector('.todo-ul')
+                    let finishedUl = document.querySelector('.finished-ul')
+                    let todoList = document.querySelector('.todo-div');
+                    todoUl.textContent = ''
+                    finishedUl.textContent = ''
+                    for (const todo of data) {
 
-                    if (todo.status === true) {
-                        createList(todoList, todo, finishedUl)
+                        if (todo.status === true) {
+                            createList(todoList, todo, finishedUl)
 
-                    } else {
-                        createList(todoList, todo, todoUl)
+                        } else {
+                            createList(todoList, todo, todoUl)
+                        }
+
                     }
 
-                }
 
-
-            })
-})
+                })
+        })
 
     }
 
@@ -310,7 +312,7 @@ window.addEventListener('load', function() {
 
         clonedForm.elements['text'].value = data.text
         clonedForm.elements['date'].value = data.date.date
-        clonedForm.elements['priority'].value = data.priority
+        clonedForm.elements['button'].textContent = 'update'
         formContainer.textContent = ''
         formContainer.append(clonedForm)
         modal.click()
@@ -393,6 +395,12 @@ window.addEventListener('load', function() {
 
     }
 
-    
+    const register=document.querySelector('.register')
+    if(registere){
+        register.addEventListener('submit',()=>{
+            console.log('register')
+        })
+    }
+
     // end
 })

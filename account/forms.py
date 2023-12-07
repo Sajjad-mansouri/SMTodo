@@ -14,15 +14,15 @@ class CustomCreationForm(UserCreationForm):
 		fields=('first_name','last_name','username','email',)
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
+		self.fields['username'].help_text=None
+
 		self.fields['password1'].help_text=None
+		self.fields['password2'].help_text=None
+
 
 		self.helper=FormHelper()
 		self.helper.layout=Layout(
-			Row(
-				Column('first_name', css_class='col-md-6 mb-4'),
-				Column('last_name', css_class='col-md-6 mb-4'),
-				css_class='row'
-			),
+
 			Row(
 				Column('username', css_class='form-outline mb-4'),
 				)

@@ -1,10 +1,10 @@
 {%extends 'base.html'%}
-{%block title%}Social Website{%endblock%}
+{%block title%}SM ToDo{%endblock%}
 {%block body%}
 <!-- Section: Design Block -->
 <section class="">
   <!-- Jumbotron -->
-  <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
+
     <div class="container">
       <div class="row gx-lg-5 align-items-center">
         <div class="col-lg-6 mb-5 mb-lg-0">
@@ -13,7 +13,11 @@
             <span class="text-primary">Website</span>
           </h1>
           <p style="color: hsl(217, 10%, 50.8%)">
-            this is site
+            this is site Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            
+        
           </p>
         </div>
 
@@ -38,7 +42,7 @@
         <h5 class="modal-title" id="signupModalLabel">Create an Account</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form method="POST" action="{%url 'register'%}">
+      <form method="POST" action="{%url 'register'%}" class="register">
         {%csrf_token%}
         <div class="modal-body mx-3">
           <div class="mb-3">
@@ -95,8 +99,6 @@
       </form>
     </div>
   </div>
-</div>
-
 
 
 
