@@ -274,8 +274,9 @@ window.addEventListener('load', function() {
             let method = 'patch'
             const body = JSON.stringify({ 'status': checked })
             const response = await fetchTodo(method, accessToken, id, body);
+            console.log(response)
             const data = await response.json();
-            console.log(data)
+            
             let finishedUl = document.querySelector('.finished-ul');
             let todoUl = document.querySelector('.todo-ul');
             let todoDiv = document.querySelector(`#div-${data.id}`);
