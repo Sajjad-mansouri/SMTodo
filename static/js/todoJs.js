@@ -1,7 +1,7 @@
 import { getToken, login } from './get-token.js';
 
 window.addEventListener('load', function() {
-    const origin= location.origin
+    const origin = location.origin
     const form = document.getElementById('todo-form');
     const closeDatePicker = document.querySelector('.close-date')
     const loginForm = document.querySelector('.login')
@@ -22,7 +22,7 @@ window.addEventListener('load', function() {
             async function addTodo(accessToken) {
 
                 try {
-                    const response = await fetch(origin+"/api/", {
+                    const response = await fetch(origin + "/api/", {
                             method: 'POST',
 
                             headers: {
@@ -103,7 +103,7 @@ window.addEventListener('load', function() {
 
         }
         getToken().then((accessToken) => {
-            fetch(origin+`/api/${currentTime.toISOString()}`, {
+            fetch(origin + `/api/${currentTime.toISOString()}`, {
                     headers: {
                         'Authorization': `Bearer ${accessToken}`
                     }
@@ -233,7 +233,7 @@ window.addEventListener('load', function() {
         }
 
 
-        return fetch(origin+'/api/' + path, {
+        return fetch(origin + '/api/' + path, {
             method: method,
 
             headers: {
@@ -276,7 +276,7 @@ window.addEventListener('load', function() {
             const response = await fetchTodo(method, accessToken, id, body);
             console.log(response)
             const data = await response.json();
-            
+
             let finishedUl = document.querySelector('.finished-ul');
             let todoUl = document.querySelector('.todo-ul');
             let todoDiv = document.querySelector(`#div-${data.id}`);
@@ -362,8 +362,8 @@ window.addEventListener('load', function() {
     }
 
     async function remove(accessToken, data) {
-        const response = await fetch(origin+`/api/todo/${data}`, {
-            method: "delete",
+        const response = await fetch(origin + `/api/todo/${data}`, {
+            method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
                 'Authorization': `Bearer ${accessToken}`
@@ -399,10 +399,29 @@ window.addEventListener('load', function() {
 
     }
 
-    const register=document.querySelector('.register')
-    if(register){
-        register.addEventListener('submit',()=>{
-            console.log('register')
+    const register = document.querySelector('.register')
+    if (register) {
+        register.addEventListener('submit', (event) => {
+            event.preventDefault()
+            getToken().then((accessToken) => {
+
+                if (accessToken != undefined) {
+
+                    const formData = new FormData(register)
+                    const body
+                    fetch(origin + 'account/login', {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Authorization': `Bearer ${accessToken}`
+                        },
+                        body:formData
+
+
+                    })
+                }
+            });
+
         })
     }
 

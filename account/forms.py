@@ -21,6 +21,7 @@ class CustomCreationForm(UserCreationForm):
 
 
 		self.helper=FormHelper()
+		self.helper.form_class='register'
 		self.helper.layout=Layout(
 
 			Row(
