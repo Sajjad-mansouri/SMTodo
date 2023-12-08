@@ -37,7 +37,7 @@ ALLOWED_HOSTS = ['localhost']
 # Application definition
 
 INSTALLED_APPS = [
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -96,12 +96,15 @@ WSGI_APPLICATION = 'SMTodo.wsgi.application'
 # }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': env('DATABASAE_ENGINE'),
         'NAME': env('DATABASAE_NAME'),
         'USER': env('DATABASAE_USER'),
         'PASSWORD': env('DATABASE_PASSWORD'),
         'HOST': env('DATABASE_HOST'),
-        'PORT': '5432',
+        'PORT': env('DATABASE_PORT'),
+        'OPTIONS': {  
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"  
+        }  
     }
 }
 

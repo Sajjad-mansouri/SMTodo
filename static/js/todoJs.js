@@ -396,7 +396,7 @@ window.addEventListener('load', function() {
     }
 
     const register=document.querySelector('.register')
-    if(registere){
+    if(register){
         register.addEventListener('submit',()=>{
             console.log('register')
         })

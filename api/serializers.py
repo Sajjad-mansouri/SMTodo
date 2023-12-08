@@ -27,7 +27,6 @@ class TodoSerializer(serializers.ModelSerializer):
     def update(self,instance,validated_data):
         instance.status=validated_data.get('status',instance.status)
         instance.text = validated_data.get('text',instance.text)
-        instance.priority = validated_data.get('priority',instance.priority)
         try:
             date = validated_data.get('date',instance.date)
             dateInstance=Day.objects.get_or_create(date=date['date'])
