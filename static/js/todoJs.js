@@ -271,7 +271,7 @@ window.addEventListener('load', function() {
         try {
 
             console.log('todostatus')
-            let method = 'patch'
+            let method = 'PATCH'
             const body = JSON.stringify({ 'status': checked })
             const response = await fetchTodo(method, accessToken, id, body);
             console.log(response)
