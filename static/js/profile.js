@@ -6,7 +6,7 @@ dropDownProfile()
 
 
 if (window.location.pathname.includes('profile')) {
-
+    const origin= location.origin
     const imageBtn = document.querySelector('button[type="button"]');
     const imgInput = document.querySelector('input[type="file"]');
     const img = document.querySelector(".profile_image")
@@ -25,7 +25,7 @@ if (window.location.pathname.includes('profile')) {
 
                 let file = imgInput.files[0]
                 formData.append('profile_image', file)
-                fetch(`http://localhost:8000/api/profile/${user}`, {
+                fetch(origin+`/api/profile/${user}`, {
                         method: "PATCH",
                         headers: {
                             'Authorization': `Bearer ${accessToken}`,
@@ -57,7 +57,7 @@ if (window.location.pathname.includes('profile')) {
         })
         async function postProfileForm(accessToken, formData) {
             try {
-                const response = await fetch(`http://localhost:8000/api/profile/${user}`, {
+                const response = await fetch(origin+`/api/profile/${user}`, {
                     method: "PATCH",
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,

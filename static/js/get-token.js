@@ -6,12 +6,12 @@ export async function getToken(){
             const refreshToken =  localStorage.getItem('refresh_token');      
 
             if(!refreshToken ){
-            window.location.href='http://localhost:8000/account/login'
+            window.location.href=origin+'/account/login'
             } 
 
             if(accessToken=='undefined' || isTokenExpired( accessToken) ){
 
-                const response=await fetch('http://localhost:8000/api/token/refresh/',{
+                const response=await fetch(origin+'/api/token/refresh/',{
                     method:'POST',
                     headers:{
                         'Content-Type':'application/json'
@@ -25,7 +25,7 @@ export async function getToken(){
                     localStorage.setItem('access_token',accessToken);
                     return accessToken
                 } else{
-                    window.location.href='http://localhost:8000/account/login'
+                    window.location.href=origin+'/account/login'
                 }  
 
 
@@ -55,7 +55,7 @@ export async function login(event){
     event.preventDefault();
     const form=event.target;
     const formData=new FormData(form);
-    const response=await fetch('http://localhost:8000/api/token/',{
+    const response=await fetch(origin+'/api/token/',{
         method:'POST',
         headers:{
         "Content-Type":'application/json'   

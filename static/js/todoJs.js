@@ -1,10 +1,12 @@
 import { getToken, login } from './get-token.js';
 
 window.addEventListener('load', function() {
+    const origin= location.origin
     const form = document.getElementById('todo-form');
     const closeDatePicker = document.querySelector('.close-date')
     const loginForm = document.querySelector('.login')
     if (loginForm) {
+
         loginForm.addEventListener('submit', (event) => login(event))
     }
 
@@ -18,8 +20,9 @@ window.addEventListener('load', function() {
             obj.date = { 'date': obj.date }
             var json = JSON.stringify(obj);
             async function addTodo(accessToken) {
+
                 try {
-                    const response = await fetch("http://localhost:8000/api/", {
+                    const response = await fetch(origin+"/api/", {
                             method: 'POST',
 
                             headers: {
@@ -100,7 +103,7 @@ window.addEventListener('load', function() {
 
         }
         getToken().then((accessToken) => {
-            fetch(`http://localhost:8000/api/${currentTime.toISOString()}`, {
+            fetch(origin+`/api/${currentTime.toISOString()}`, {
                     headers: {
                         'Authorization': `Bearer ${accessToken}`
                     }
@@ -230,7 +233,7 @@ window.addEventListener('load', function() {
         }
 
 
-        return fetch('http://localhost:8000/api/' + path, {
+        return fetch(origin+'/api/' + path, {
             method: method,
 
             headers: {
@@ -358,7 +361,7 @@ window.addEventListener('load', function() {
     }
 
     async function remove(accessToken, data) {
-        const response = await fetch(`http://localhost:8000/api/todo/${data}`, {
+        const response = await fetch(origin+`/api/todo/${data}`, {
             method: "delete",
             headers: {
                 "Content-Type": "application/json",
