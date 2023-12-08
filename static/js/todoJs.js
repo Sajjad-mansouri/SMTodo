@@ -399,31 +399,7 @@ window.addEventListener('load', function() {
 
     }
 
-    const register = document.querySelector('.register')
-    if (register) {
-        register.addEventListener('submit', (event) => {
-            event.preventDefault()
-            getToken().then((accessToken) => {
 
-                if (accessToken != undefined) {
-
-                    const formData = new FormData(register)
-                    const body
-                    fetch(origin + 'account/login', {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            'Authorization': `Bearer ${accessToken}`
-                        },
-                        body:formData
-
-
-                    })
-                }
-            });
-
-        })
-    }
 
     // end
 })
