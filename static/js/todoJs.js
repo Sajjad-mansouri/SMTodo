@@ -300,7 +300,7 @@ window.addEventListener('load', function() {
 
             }
         } catch (error) {
-
+            console.log(error)
         }
     }
 
